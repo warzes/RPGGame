@@ -99,7 +99,9 @@
     <ClInclude Include="OGLBuffer.h" />
     <ClInclude Include="OGLContext.h" />
     <ClInclude Include="OGLCore.h" />
+    <ClInclude Include="OGLFramebuffer.h" />
     <ClInclude Include="OGLShader.h" />
+    <ClInclude Include="OGLTexture.h" />
     <ClInclude Include="OGLVertexAttribute.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Window.h" />
@@ -112,7 +114,9 @@
     <ClCompile Include="OGLBuffer.cpp" />
     <ClCompile Include="OGLContext.cpp" />
     <ClCompile Include="OGLCore.cpp" />
+    <ClCompile Include="OGLFramebuffer.cpp" />
     <ClCompile Include="OGLShader.cpp" />
+    <ClCompile Include="OGLTexture.cpp" />
     <ClCompile Include="OGLVertexAttribute.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

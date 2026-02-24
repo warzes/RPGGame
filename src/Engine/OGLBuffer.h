@@ -20,11 +20,15 @@ enum class BufferUsage : uint8_t
 	StreamCopy
 };
 
-struct BufferHandle final { GLuint handle{ 0u }; };
+struct BufferHandle final 
+{ 
+	GLuint       handle{ 0u }; 
+	BufferTarget target{ BufferTarget::Array }; // TODO:
+};
 
 GLuint GetCurrentBindBuffer(BufferTarget target);
 
 BufferHandle CreateBuffer(BufferTarget target, BufferUsage usage, size_t size, const void* data);
 void DestroyBuffer(BufferHandle& handle);
 
-void BufferSubData(BufferHandle bufferId, BufferTarget target, GLintptr offset, GLsizeiptr size, const void* data);
+void BufferSubData(BufferHandle bufferId, GLintptr offset, GLsizeiptr size, const void* data);

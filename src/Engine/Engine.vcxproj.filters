@@ -36,6 +36,12 @@
     <ClInclude Include="OGLCore.h">
       <Filter>OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="OGLTexture.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="OGLFramebuffer.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -67,6 +73,12 @@
       <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="OGLCore.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="OGLTexture.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="OGLFramebuffer.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
   </ItemGroup>

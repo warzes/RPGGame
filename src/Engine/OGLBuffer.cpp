@@ -55,7 +55,22 @@ BufferHandle CreateBuffer(BufferTarget target, BufferUsage usage, size_t size, c
 	glBufferData(glTarget, static_cast<GLsizeiptr>(size), data, EnumToValue(usage));
 	glBindBuffer(glTarget, currentBuffer);
 
+	buffer.target = target;
+
 	return buffer;
+}
+//=============================================================================
+void DestroyBuffer(BufferHandle& handle)
+{
+	if (handle.handle)
+	{
+		const GLuint currentBuffer = GetCurrentBindBuffer(handle.target);
+		if (currentBuffer == handle.handle)
+			glBindBuffer(EnumToValue(handle.target), 0);
+
+		glDeleteBuffers(1, &handle.handle);
+	}
+	handle.handle = 0;
 }
 //=============================================================================
 void BufferSubData(BufferHandle bufferId, BufferTarget target, GLintptr offset, GLsizeiptr size, const void* data)
