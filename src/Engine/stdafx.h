@@ -1,0 +1,70 @@
+﻿#pragma once
+
+#include "3rdpartyConfig.h"
+#include "EngineConfig.h"
+
+#define _USE_MATH_DEFINES
+
+#if defined(_WIN32)
+#	define NOMINMAX
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
+#if defined(_MSC_VER)
+#	pragma warning(disable : 4514)
+#	pragma warning(disable : 4625)
+#	pragma warning(disable : 4626)
+#	pragma warning(disable : 4820)
+#	pragma warning(disable : 5045)
+#	pragma warning(push, 3)
+#	pragma warning(disable : 4061)
+#	pragma warning(disable : 4365)
+#	pragma warning(disable : 4464)
+#	pragma warning(disable : 4865)
+#	pragma warning(disable : 5029)
+#	pragma warning(disable : 5267)
+#endif
+
+#include <filesystem>
+#include <fstream>
+#include <regex>
+#include <string>
+#include <string_view>
+#include <span>
+#include <vector>
+#include <unordered_map>
+
+#include <glad/gl.h>
+
+#define RGFWDEF
+#define RGFW_OPENGL
+#include <RGFW/RGFW.h>
+
+#if defined(__EMSCRIPTEN__)
+#	define GLFW_INCLUDE_ES3
+#	include <emscripten/emscripten.h>
+#	include <emscripten/html5.h>
+#endif
+
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_opengl3.h>
+#include <imgui/imgui_impl_rgfw.h>
+
+#define GLM_FORCE_XYZW_ONLY 1
+#define GLM_ENABLE_EXPERIMENTAL 1
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/dual_quaternion.hpp>
+#include <glm/gtx/type_aligned.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/hash.hpp>
+
+#include <stb/stb_image.h>
+#include <stb/stb_truetype.h>
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
