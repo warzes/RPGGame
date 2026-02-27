@@ -26,15 +26,15 @@ extern RGFW_window* windowHandle;
 namespace
 {
 	// timing
-	float       deltaTime{ 0.0f };
+	float                                          deltaTime{ 0.0f };
 	std::chrono::high_resolution_clock::time_point previousTime;
 	std::chrono::high_resolution_clock::time_point currentTime;
 
 	// fps
-	const float avgInterval{ 0.5f };
-	unsigned    frameCounter{ 0 };
-	double      timeCounter{ 0.0 };
-	float       framesPerSecond{ 0.0f };
+	const float                                    avgInterval{ 0.5f };
+	unsigned                                       frameCounter{ 0 };
+	double                                         timeCounter{ 0.0 };
+	float                                          framesPerSecond{ 0.0f };
 }
 //=============================================================================
 bool engine::Init(uint16_t width, uint16_t height, std::string_view title)

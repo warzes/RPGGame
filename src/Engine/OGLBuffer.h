@@ -1,11 +1,6 @@
 ﻿#pragma once
 
-enum class BufferTarget : uint8_t
-{
-	Array,
-	ElementArray,
-	Uniform
-};
+// TODO: UBO нужно переписать.
 
 enum class BufferUsage : uint8_t
 {
@@ -20,15 +15,36 @@ enum class BufferUsage : uint8_t
 	StreamCopy
 };
 
-struct BufferHandle final 
+struct VertexBufferHandle final 
 { 
-	GLuint       handle{ 0u }; 
-	BufferTarget target{ BufferTarget::Array }; // TODO:
+	GLuint handle{ 0u }; 
 };
 
-GLuint GetCurrentBindBuffer(BufferTarget target);
+struct IndexBufferHandle final
+{
+	GLuint handle{ 0u };
+};
 
-BufferHandle CreateBuffer(BufferTarget target, BufferUsage usage, size_t size, const void* data);
-void DestroyBuffer(BufferHandle& handle);
+struct UniformBufferHandle final
+{
+	GLuint handle{ 0u };
+};
 
-void BufferSubData(BufferHandle bufferId, GLintptr offset, GLsizeiptr size, const void* data);
+GLuint GetCurrentVertexBindBuffer();
+GLuint GetCurrentIndexBindBuffer();
+
+VertexBufferHandle CreateVertexBuffer(BufferUsage usage, size_t size, const void* data);
+IndexBufferHandle CreateIndexBuffer(BufferUsage usage, size_t size, const void* data);
+UniformBufferHandle CreateUniformBuffer(BufferUsage usage, size_t size, const void* data);
+
+void DestroyBuffer(VertexBufferHandle& handle);
+void DestroyBuffer(IndexBufferHandle& handle);
+void DestroyBuffer(UniformBufferHandle& handle);
+
+void BufferSubData(VertexBufferHandle& bufferId, GLintptr offset, GLsizeiptr size, const void* data);
+void BufferSubData(IndexBufferHandle& bufferId, GLintptr offset, GLsizeiptr size, const void* data);
+void BufferSubData(UniformBufferHandle& bufferId, GLintptr offset, GLsizeiptr size, const void* data);
+
+void Bind(VertexBufferHandle bufferId);
+void Bind(IndexBufferHandle bufferId);
+void Bind(UniformBufferHandle bufferId, std::optional<uint32_t> slot = std::nullopt);

@@ -7,6 +7,10 @@ namespace ogl
 	void SetClearColor(float red, float green, float blue, float alpha = 1.0f);
 	void Clear(bool colorBuffer, bool depthBuffer, bool stencilBuffer = false);
 
+	// Enables or disables a specific rendering capability.
+	void SetCapability(RenderingCapability capability, bool value);
+	bool GetCapability(RenderingCapability capability);
+
 	void SetRasterizationMode(RasterizationMode rasterizationMode);
 
 	void SetStencilAlgorithm(ComparisonFunc algorithm, int32_t reference, uint32_t mask);

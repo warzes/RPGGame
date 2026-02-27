@@ -12,6 +12,20 @@ enum class DataType : uint8_t
 	Double
 };
 
+enum class RenderingCapability : uint8_t
+{
+	Blend,
+	CullFace,
+	DepthTest,
+	Dither,
+	PolygonOffsetFill,
+	SampleAlphaToCoverage,
+	SampleCoverage,
+	ScissorTest,
+	StencilTest,
+	Multisample
+};
+
 enum class RasterizationMode : uint8_t
 {
 	Point,
@@ -101,6 +115,7 @@ enum class PrimitiveMode : uint8_t
 //=============================================================================
 // Function declarations
 //=============================================================================
+inline GLenum EnumToValue(RenderingCapability c) noexcept;
 inline GLenum EnumToValue(DataType type) noexcept;
 inline GLenum EnumToValue(RasterizationMode mode) noexcept;
 inline GLenum EnumToValue(ComparisonFunc func) noexcept;

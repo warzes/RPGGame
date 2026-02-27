@@ -17,69 +17,135 @@ inline GLenum EnumToValue(BufferUsage mode) noexcept
 	}
 }
 //=============================================================================
-inline GLenum EnumToValue(BufferTarget type) noexcept
+GLuint GetCurrentVertexBindBuffer()
 {
-	switch (type) {
-	case BufferTarget::Array:        return GL_ARRAY_BUFFER;
-	case BufferTarget::ElementArray: return GL_ELEMENT_ARRAY_BUFFER;
-	case BufferTarget::Uniform:      return GL_UNIFORM_BUFFER;
-	default: std::unreachable();
-	}
-}
-//=============================================================================
-GLuint GetCurrentBindBuffer(BufferTarget target)
-{
-	GLenum glTarget = EnumToValue(target);
-	GLenum targetBinding{ 0 };
-	switch (glTarget)
-	{
-	case GL_ARRAY_BUFFER:         targetBinding = GL_ARRAY_BUFFER_BINDING; break;
-	case GL_ELEMENT_ARRAY_BUFFER: targetBinding = GL_ELEMENT_ARRAY_BUFFER_BINDING; break;
-	case GL_UNIFORM_BUFFER:       targetBinding = GL_UNIFORM_BUFFER_BINDING; break;
-	default: std::unreachable(); break;
-	}
 	GLuint currentBuffer{ 0 };
-	glGetIntegerv(targetBinding, (GLint*)&currentBuffer);
-
+	glGetIntegerv(GL_ARRAY_BUFFER_BINDING, (GLint*)&currentBuffer);
 	return currentBuffer;
 }
 //=============================================================================
-BufferHandle CreateBuffer(BufferTarget target, BufferUsage usage, size_t size, const void* data)
+GLuint GetCurrentIndexBindBuffer()
 {
-	const GLuint currentBuffer = GetCurrentBindBuffer(target);
-	GLenum glTarget = EnumToValue(target);
-
-	BufferHandle buffer{};
+	GLuint currentBuffer{ 0 };
+	glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, (GLint*)&currentBuffer);
+	return currentBuffer;
+}
+//=============================================================================
+VertexBufferHandle CreateVertexBuffer(BufferUsage usage, size_t size, const void* data)
+{
+	const GLuint currentBuffer = GetCurrentVertexBindBuffer();
+	VertexBufferHandle buffer{};
 	glGenBuffers(1, &buffer.handle);
-	glBindBuffer(glTarget, buffer.handle);
-	glBufferData(glTarget, static_cast<GLsizeiptr>(size), data, EnumToValue(usage));
-	glBindBuffer(glTarget, currentBuffer);
-
-	buffer.target = target;
-
+	glBindBuffer(GL_ARRAY_BUFFER, buffer.handle);
+	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(size), data, EnumToValue(usage));
+	glBindBuffer(GL_ARRAY_BUFFER, currentBuffer);
 	return buffer;
 }
 //=============================================================================
-void DestroyBuffer(BufferHandle& handle)
+IndexBufferHandle CreateIndexBuffer(BufferUsage usage, size_t size, const void* data)
+{
+	const GLuint currentBuffer = GetCurrentIndexBindBuffer();
+	IndexBufferHandle buffer{};
+	glGenBuffers(1, &buffer.handle);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer.handle);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(size), data, EnumToValue(usage));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentBuffer);
+	return buffer;
+}
+//=============================================================================
+UniformBufferHandle CreateUniformBuffer(BufferUsage usage, size_t size, const void* data)
+{
+	// TODO: с UBO нельзя получить текущий бинд, как у вершинных/индексных буферов, так как оно привязывается к слотам (через glBindBufferBase)
+	// поэтому рабочий вариант - это делать свою функцию BindUbo в которой кешировать текущие ubo
+
+	UniformBufferHandle buffer{};
+	glGenBuffers(1, &buffer.handle);
+	glBindBuffer(GL_UNIFORM_BUFFER, buffer.handle);
+	glBufferData(GL_UNIFORM_BUFFER, static_cast<GLsizeiptr>(size), data, EnumToValue(usage));
+	return buffer;
+}
+//=============================================================================
+void DestroyBuffer(VertexBufferHandle& handle)
 {
 	if (handle.handle)
 	{
-		const GLuint currentBuffer = GetCurrentBindBuffer(handle.target);
+		const GLuint currentBuffer = GetCurrentVertexBindBuffer();
 		if (currentBuffer == handle.handle)
-			glBindBuffer(EnumToValue(handle.target), 0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glDeleteBuffers(1, &handle.handle);
 	}
 	handle.handle = 0;
 }
 //=============================================================================
-void BufferSubData(BufferHandle bufferId, BufferTarget target, GLintptr offset, GLsizeiptr size, const void* data)
+void DestroyBuffer(IndexBufferHandle& handle)
 {
-	GLuint currentBuffer = GetCurrentBindBuffer(target);
-	GLenum glTarget = EnumToValue(target);
+	if (handle.handle)
+	{
+		const GLuint currentBuffer = GetCurrentIndexBindBuffer();
+		if (currentBuffer == handle.handle)
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glBindBuffer(glTarget, bufferId.handle);
-	glBufferSubData(glTarget, offset, size, data);
-	glBindBuffer(glTarget, currentBuffer);
+		glDeleteBuffers(1, &handle.handle);
+	}
+	handle.handle = 0;
+}
+//=============================================================================
+void DestroyBuffer(UniformBufferHandle& handle)
+{
+	if (handle.handle)
+	{
+		glDeleteBuffers(1, &handle.handle);
+	}
+	handle.handle = 0;
+}
+//=============================================================================
+void BufferSubData(VertexBufferHandle bufferId, GLintptr offset, GLsizeiptr size, const void* data)
+{
+	GLuint currentBuffer = GetCurrentVertexBindBuffer();
+
+	glBindBuffer(GL_ARRAY_BUFFER, bufferId.handle);
+	glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
+	glBindBuffer(GL_ARRAY_BUFFER, currentBuffer);
+}
+//=============================================================================
+void BufferSubData(IndexBufferHandle bufferId, GLintptr offset, GLsizeiptr size, const void* data)
+{
+	GLuint currentBuffer = GetCurrentIndexBindBuffer();
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferId.handle);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, size, data);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentBuffer);
+}
+//=============================================================================
+void BufferSubData(UniformBufferHandle bufferId, GLintptr offset, GLsizeiptr size, const void* data)
+{
+	// TODO: с UBO нельзя получить текущий бинд, как у вершинных/индексных буферов, так как оно привязывается к слотам (через glBindBufferBase)
+	// поэтому рабочий вариант - это делать свою функцию BindUbo в которой кешировать текущие ubo
+
+	glBindBuffer(GL_UNIFORM_BUFFER, bufferId.handle);
+	glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data);
+}
+//=============================================================================
+void Bind(VertexBufferHandle bufferId)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, bufferId.handle);
+}
+//=============================================================================
+void Bind(IndexBufferHandle bufferId)
+{
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferId.handle);
+}
+//=============================================================================
+void Bind(UniformBufferHandle bufferId, std::optional<uint32_t> slot)
+{
+	if (slot.has_value())
+	{
+		glBindBufferBase(GL_UNIFORM_BUFFER, slot.value(), bufferId.handle);
+	}
+	else
+	{
+		glBindBuffer(GL_UNIFORM_BUFFER, bufferId.handle);
+	}
 }
 //=============================================================================

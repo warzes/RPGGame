@@ -10,7 +10,7 @@ extern "C"
 }
 #endif
 //=============================================================================
-void openGLErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, [[maybe_unused]] GLsizei length, const GLchar* message, [[maybe_unused]] const void* user_param) noexcept
+void GLDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, [[maybe_unused]] GLsizei length, const GLchar* message, [[maybe_unused]] const void* user_param) noexcept
 {
 	// Ignore certain verbose info messages (particularly ones on Nvidia).
 	if (id == 131169 ||
@@ -93,7 +93,7 @@ bool OGLContextInit()
 		Print("Enable OpenGL Debug Context");
 		glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); // makes sure errors are displayed synchronously
-		glDebugMessageCallback(openGLErrorCallback, nullptr);
+		glDebugMessageCallback(GLDebugMessageCallback, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 	}
 
@@ -127,6 +127,16 @@ void ogl::Clear(bool colorBuffer, bool depthBuffer, bool stencilBuffer)
 	{
 		glClear(clearMask);
 	}
+}
+//=============================================================================
+void ogl::SetCapability(RenderingCapability capability, bool value)
+{
+	(value ? glEnable : glDisable)(EnumToValue(capability));
+}
+//=============================================================================
+bool ogl::GetCapability(RenderingCapability capability)
+{
+	return glIsEnabled(EnumToValue(capability));
 }
 //=============================================================================
 void ogl::SetRasterizationMode(RasterizationMode rasterizationMode)

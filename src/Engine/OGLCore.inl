@@ -2,6 +2,24 @@
 // Implementation
 //=============================================================================
 
+inline GLenum EnumToValue(RenderingCapability c) noexcept
+{
+	switch (c)
+	{
+	case RenderingCapability::Blend:                 return GL_BLEND;
+	case RenderingCapability::CullFace:              return GL_CULL_FACE;
+	case RenderingCapability::DepthTest:             return GL_DEPTH_TEST;
+	case RenderingCapability::Dither:                return GL_DITHER;
+	case RenderingCapability::PolygonOffsetFill:     return GL_POLYGON_OFFSET_FILL;
+	case RenderingCapability::SampleAlphaToCoverage: return GL_SAMPLE_ALPHA_TO_COVERAGE;
+	case RenderingCapability::SampleCoverage:        return GL_SAMPLE_COVERAGE;
+	case RenderingCapability::ScissorTest:           return GL_SCISSOR_TEST;
+	case RenderingCapability::StencilTest:           return GL_STENCIL_TEST;
+	case RenderingCapability::Multisample:           return GL_MULTISAMPLE;
+	default: std::unreachable();
+	}
+}
+
 inline GLenum EnumToValue(DataType type) noexcept
 {
 	switch (type) {
