@@ -1,6 +1,5 @@
 ﻿#include "stdafx.h"
 #include "Input.h"
-#include "Window.h"
 #include "Log.h"
 //=============================================================================
 /*
@@ -17,6 +16,12 @@ namespace input
 	void Update();
 }
 //=============================================================================
+namespace window
+{
+	void Quit();
+}
+//=============================================================================
+extern RGFW_window* windowHandle;
 RGFW_event windowEvent{};
 glm::vec2  cursorPos{};
 glm::vec2  cursorOffset{};
@@ -61,7 +66,7 @@ void input::Init()
 	cursorPos = cursorOffset = scrollOffset = glm::vec2(0.0f);
 
 	i32 xpos, ypos;
-	RGFW_window_getMouse(window::handle, &xpos, &ypos);
+	RGFW_window_getMouse(windowHandle, &xpos, &ypos);
 	cursorOffset.x = static_cast<float>(xpos);
 	cursorOffset.y = static_cast<float>(ypos);
 }
@@ -71,7 +76,7 @@ void input::Update()
 	scrollOffset = glm::vec2(0);
 	cursorOffset = glm::vec2(0);
 
-	while (RGFW_window_checkEvent(window::handle, &windowEvent))
+	while (RGFW_window_checkEvent(windowHandle, &windowEvent))
 	{
 		if (windowEvent.type == RGFW_quit)
 		{
@@ -83,21 +88,21 @@ void input::Update()
 //=============================================================================
 void input::SetCursorVisible(bool state)
 {
-	bool isHoldingMouse = RGFW_window_isRawMouseMode(window::handle) && RGFW_window_isCaptured(window::handle);
+	bool isHoldingMouse = RGFW_window_isRawMouseMode(windowHandle) && RGFW_window_isCaptured(windowHandle);
 	if (state)
 	{
 		if (isHoldingMouse)
 		{
-			RGFW_window_showMouse(window::handle, 1);
-			RGFW_window_captureRawMouse(window::handle, RGFW_FALSE);
+			RGFW_window_showMouse(windowHandle, 1);
+			RGFW_window_captureRawMouse(windowHandle, RGFW_FALSE);
 		}
 	}
 	else
 	{
 		if (!isHoldingMouse)
 		{
-			RGFW_window_showMouse(window::handle, 0);
-			RGFW_window_captureRawMouse(window::handle, RGFW_TRUE);
+			RGFW_window_showMouse(windowHandle, 0);
+			RGFW_window_captureRawMouse(windowHandle, RGFW_TRUE);
 		}
 	}
 }

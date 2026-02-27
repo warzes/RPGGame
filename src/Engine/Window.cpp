@@ -2,10 +2,11 @@
 #include "Window.h"
 #include "Log.h"
 //=============================================================================
-bool       windowQuit{ true };
-uint16_t   windowWidth{ 0 };
-uint16_t   windowHeight{ 0 };
-float      windowAspect{ 1.0f };
+RGFW_window* windowHandle{ nullptr };
+bool         windowQuit{ true };
+uint16_t     windowWidth{ 0 };
+uint16_t     windowHeight{ 0 };
+float        windowAspect{ 1.0f };
 //=============================================================================
 namespace window
 {
@@ -90,8 +91,8 @@ bool window::Init(uint16_t width, uint16_t height, std::string_view title, bool 
 	if (!resizable) windowFlags |= RGFW_windowNoResize;
 	if (maximized) windowFlags |= RGFW_windowMaximize;
 
-	handle = RGFW_createWindow(title.data(), 0, 0, width, height, windowFlags);
-	if (!handle)
+	windowHandle = RGFW_createWindow(title.data(), 0, 0, width, height, windowFlags);
+	if (!windowHandle)
 	{
 		Fatal("Failed to create RGFW window");
 		return false;
@@ -115,15 +116,15 @@ bool window::Init(uint16_t width, uint16_t height, std::string_view title, bool 
 
 	// Get buffer size information
 	int displayW, displayH;
-	RGFW_window_getSize(handle, &displayW, &displayH);
+	RGFW_window_getSize(windowHandle, &displayW, &displayH);
 	windowWidth = static_cast<uint16_t>(displayW);
 	windowHeight = static_cast<uint16_t>(displayH);
 	windowAspect = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
 
 	// Set the current context
-	RGFW_window_makeCurrentContext_OpenGL(handle);
+	RGFW_window_makeCurrentContext_OpenGL(windowHandle);
 
-	RGFW_window_swapInterval_OpenGL(handle, vsync ? 1 : 0);
+	RGFW_window_swapInterval_OpenGL(windowHandle, vsync ? 1 : 0);
 
 	windowQuit = false;
 
@@ -133,19 +134,19 @@ bool window::Init(uint16_t width, uint16_t height, std::string_view title, bool 
 void window::Close() noexcept
 {
 	windowQuit = true;
-	if (handle) RGFW_window_close(handle);
-	handle = nullptr;
+	if (windowHandle) RGFW_window_close(windowHandle);
+	windowHandle = nullptr;
 	RGFW_deinit();
 }
 //=============================================================================
 bool window::WindowShouldClose() noexcept
 {
-	return RGFW_window_shouldClose(handle) == RGFW_TRUE || windowQuit;
+	return RGFW_window_shouldClose(windowHandle) == RGFW_TRUE || windowQuit;
 }
 //=============================================================================
 void window::Swap()
 {
-	RGFW_window_swapBuffers_OpenGL(handle);
+	RGFW_window_swapBuffers_OpenGL(windowHandle);
 }
 //=============================================================================
 void window::Quit()

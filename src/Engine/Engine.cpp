@@ -4,20 +4,6 @@
 #include "Input.h"
 #include "Log.h"
 //=============================================================================
-namespace
-{
-	// timing
-	float       deltaTime{ 0.0f };
-	std::chrono::high_resolution_clock::time_point previousTime;
-	std::chrono::high_resolution_clock::time_point currentTime;
-
-	// fps
-	const float avgInterval{ 0.5f };
-	unsigned    frameCounter{ 0 };
-	double      timeCounter{ 0.0 };
-	float       framesPerSecond{ 0.0f };
-}
-//=============================================================================
 bool OGLContextInit();
 void OGLContextClose();
 //=============================================================================
@@ -33,6 +19,22 @@ namespace window
 	void Close() noexcept;
 	bool WindowShouldClose() noexcept;
 	void Swap();
+}
+//=============================================================================
+extern RGFW_window* windowHandle;
+//=============================================================================
+namespace
+{
+	// timing
+	float       deltaTime{ 0.0f };
+	std::chrono::high_resolution_clock::time_point previousTime;
+	std::chrono::high_resolution_clock::time_point currentTime;
+
+	// fps
+	const float avgInterval{ 0.5f };
+	unsigned    frameCounter{ 0 };
+	double      timeCounter{ 0.0 };
+	float       framesPerSecond{ 0.0f };
 }
 //=============================================================================
 bool engine::Init(uint16_t width, uint16_t height, std::string_view title)
@@ -52,7 +54,7 @@ bool engine::Init(uint16_t width, uint16_t height, std::string_view title)
 
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-		ImGui_ImplRgfw_InitForOpenGL(window::handle, false);
+		ImGui_ImplRgfw_InitForOpenGL(windowHandle, false);
 		ImGui_ImplOpenGL3_Init("#version 330");
 		ImGui::StyleColorsDark();
 
