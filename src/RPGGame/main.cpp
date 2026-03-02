@@ -15,15 +15,24 @@ void ExampleCompute();
 также примеры - это стратегия pharaoh и timberborn
 https://v3x3d.itch.io/mini-medieval
 */
+
+/*
+TODO: 
+- камера от первого лица
+- вывод трехмерных примитивов (куб, сфера, цилиндр)
+- загрузка моделей из файлов (формат .obj)
+-
+*/
+
 int main(
 	[[maybe_unused]] int   argc,
 	[[maybe_unused]] char* argv[])
 {
-#if 1
+#if 0
 	//ExampleTriangle();
-	//ExampleCube();
+	ExampleCube();
 	//ExampleFramebuffer();
-	ExampleCompute();
+	//ExampleCompute();
 #else
 	if (engine::Init(1600, 900, "Game"))
 	{
