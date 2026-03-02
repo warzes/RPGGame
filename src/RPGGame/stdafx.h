@@ -11,8 +11,9 @@
 #include <Engine/OGLCore.h>
 #include <Engine/OGLContext.h>
 #include <Engine/OGLBuffer.h>
-#include <Engine/OGLVertexAttribute.h>
-#include <Engine/OGLShader.h>
+#include <Engine/OGLVertexArray.h>
+#include <Engine/OGLShaderStage.h>
+#include <Engine/OGLShaderProgram.h>
 #include <Engine/OGLTexture.h>
 #include <Engine/OGLFramebuffer.h>
 

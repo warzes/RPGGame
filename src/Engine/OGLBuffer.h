@@ -1,50 +1,35 @@
 ﻿#pragma once
 
-// TODO: UBO нужно переписать.
+#include "OGLCore.h"
 
-enum class BufferUsage : uint8_t
+namespace ogl
 {
-	StaticDraw,
-	DynamicDraw,
-	StreamDraw,
-	StaticRead,
-	DynamicRead,
-	StreamRead,
-	StaticCopy,
-	DynamicCopy,
-	StreamCopy
-};
+	class Buffer final
+	{
+	public:
+		Buffer();
+		Buffer(const Buffer&) = delete;
+		Buffer& operator=(const Buffer&) = delete;
+		Buffer(Buffer&&) = delete;
+		Buffer& operator=(Buffer&&) = delete;
+		~Buffer();
 
-struct VertexBufferHandle final 
-{ 
-	GLuint handle{ 0u }; 
-};
+		uint64_t Allocate(uint64_t size, AccessSpecifier usage = AccessSpecifier::StaticDraw);
+		void Upload(const void* data, std::optional<BufferMemoryRange> range = std::nullopt);
 
-struct IndexBufferHandle final
-{
-	GLuint handle{ 0u };
-};
+		void Bind(BufferType type, std::optional<uint32_t> index = std::nullopt);
+		void Unbind();
 
-struct UniformBufferHandle final
-{
-	GLuint handle{ 0u };
-};
+		bool IsValid() const { return m_id != 0; }
+		bool IsEmpty() const { return GetSize() == 0; }
 
-GLuint GetCurrentVertexBindBuffer();
-GLuint GetCurrentIndexBindBuffer();
+		uint64_t GetSize() const;
 
-VertexBufferHandle CreateVertexBuffer(BufferUsage usage, size_t size, const void* data);
-IndexBufferHandle CreateIndexBuffer(BufferUsage usage, size_t size, const void* data);
-UniformBufferHandle CreateUniformBuffer(BufferUsage usage, size_t size, const void* data);
+		GLuint GetID() const { return m_id; }
 
-void DestroyBuffer(VertexBufferHandle& handle);
-void DestroyBuffer(IndexBufferHandle& handle);
-void DestroyBuffer(UniformBufferHandle& handle);
-
-void BufferSubData(VertexBufferHandle& bufferId, GLintptr offset, GLsizeiptr size, const void* data);
-void BufferSubData(IndexBufferHandle& bufferId, GLintptr offset, GLsizeiptr size, const void* data);
-void BufferSubData(UniformBufferHandle& bufferId, GLintptr offset, GLsizeiptr size, const void* data);
-
-void Bind(VertexBufferHandle bufferId);
-void Bind(IndexBufferHandle bufferId);
-void Bind(UniformBufferHandle bufferId, std::optional<uint32_t> slot = std::nullopt);
+	private:
+		GLuint                    m_id{ 0 };
+		uint64_t                  m_allocatedBytes{ 0 };
+		std::optional<BufferType> m_boundAs{ std::nullopt };
+	};
+} // namespace ogl

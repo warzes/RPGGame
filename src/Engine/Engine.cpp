@@ -138,6 +138,11 @@ void engine::DrawFPS()
 	ImGui::End();
 }
 //=============================================================================
+float engine::GetCurrentTime()
+{
+	return std::chrono::duration<float>(currentTime.time_since_epoch()).count();
+}
+//=============================================================================
 float engine::GetDeltaTime()
 {
 	return deltaTime;

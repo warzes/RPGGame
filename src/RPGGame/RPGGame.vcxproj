@@ -92,6 +92,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ExampleCompute.cpp" />
+    <ClCompile Include="ExampleCube.cpp" />
+    <ClCompile Include="ExampleFramebuffer.cpp" />
+    <ClCompile Include="ExampleTriangle.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

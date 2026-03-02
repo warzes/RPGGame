@@ -3,8 +3,25 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="ExampleTriangle.cpp">
+      <Filter>examples</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleCube.cpp">
+      <Filter>examples</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleFramebuffer.cpp">
+      <Filter>examples</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleCompute.cpp">
+      <Filter>examples</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="examples">
+      <UniqueIdentifier>{a055fbcf-1375-4873-aa11-93b46200cea0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

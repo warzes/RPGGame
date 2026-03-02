@@ -1,30 +1,7 @@
 ﻿#include "stdafx.h"
 //=============================================================================
-#if defined(_MSC_VER)
-#	pragma comment( lib, "3rdparty.lib" )
-#	pragma comment( lib, "Engine.lib" )
-#endif
-//=============================================================================
-void ExampleTriangle();
-void ExampleCube();
-void ExampleFramebuffer();
-void ExampleCompute();
-//=============================================================================
-/*
-мир строится из блоков. пример редактора - halftimber
-также примеры - это стратегия pharaoh и timberborn
-https://v3x3d.itch.io/mini-medieval
-*/
-int main(
-	[[maybe_unused]] int   argc,
-	[[maybe_unused]] char* argv[])
+void ExampleFramebuffer()
 {
-#if 1
-	//ExampleTriangle();
-	//ExampleCube();
-	//ExampleFramebuffer();
-	ExampleCompute();
-#else
 	if (engine::Init(1600, 900, "Game"))
 	{
 		const float vertices[] = {
@@ -77,25 +54,52 @@ void main() {
 		program.Attach(fs);
 		program.Link();
 
+		// Texture creation (framebuffer color attachment)
+		std::shared_ptr<ogl::Texture> colorBuffer = std::make_shared<ogl::Texture>(ogl::TextureType::Texture2D);
+		colorBuffer->Allocate(ogl::TextureDesc{
+			.width = 1,
+			.height = 1,
+			.internalFormat = ogl::InternalFormat::RGBA32F,
+			.useMipMaps = false,
+			.mutableDesc = ogl::MutableTextureDesc{
+				.format = ogl::Format::RGBA,
+				.type = ogl::PixelDataType::Float
+			}
+			});
+
+		// Renderbuffer creation (framebuffer depth attachment)
+		std::shared_ptr<ogl::Renderbuffer> depthBuffer = std::make_shared<ogl::Renderbuffer>();
+		depthBuffer->Allocate(1, 1, ogl::InternalFormat::DEPTH_COMPONENT);
+
+		ogl::Framebuffer framebuffer;
+		framebuffer.Attach(colorBuffer, ogl::FramebufferAttachment::Color);
+		framebuffer.Attach(depthBuffer, ogl::FramebufferAttachment::Depth);
+		assert(framebuffer.Validate());
+
 		while (!engine::ShouldClose())
 		{
 			engine::BeginFrame();
 
+			// Draw to framebuffer
+			framebuffer.Bind();
+			framebuffer.Resize(window::GetWidth(), window::GetHeight());
 			ogl::SetViewport(0, 0, window::GetWidth(), window::GetHeight());
 			ogl::SetClearColor(0.3f, 0.4f, 0.9f, 1.0f);
 			ogl::Clear(true, true, true);
-
 			program.Bind();
 			va.Bind();
 			ogl::DrawElements(ogl::PrimitiveMode::Triangles, 3);
 			va.Unbind();
 			program.Unbind();
+			framebuffer.Unbind();
+
+			// Blit framebuffer to backbuffer
+			framebuffer.BlitToBackBuffer(window::GetWidth(), window::GetHeight());
 
 			engine::DrawFPS();
 			engine::EndFrame();
 		}
 	}
 	engine::Close();
-#endif
 }
 //=============================================================================

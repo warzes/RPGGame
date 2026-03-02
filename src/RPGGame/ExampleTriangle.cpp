@@ -1,30 +1,7 @@
 ﻿#include "stdafx.h"
 //=============================================================================
-#if defined(_MSC_VER)
-#	pragma comment( lib, "3rdparty.lib" )
-#	pragma comment( lib, "Engine.lib" )
-#endif
-//=============================================================================
-void ExampleTriangle();
-void ExampleCube();
-void ExampleFramebuffer();
-void ExampleCompute();
-//=============================================================================
-/*
-мир строится из блоков. пример редактора - halftimber
-также примеры - это стратегия pharaoh и timberborn
-https://v3x3d.itch.io/mini-medieval
-*/
-int main(
-	[[maybe_unused]] int   argc,
-	[[maybe_unused]] char* argv[])
+void ExampleTriangle()
 {
-#if 1
-	//ExampleTriangle();
-	//ExampleCube();
-	//ExampleFramebuffer();
-	ExampleCompute();
-#else
 	if (engine::Init(1600, 900, "Game"))
 	{
 		const float vertices[] = {
@@ -96,6 +73,5 @@ void main() {
 		}
 	}
 	engine::Close();
-#endif
 }
 //=============================================================================

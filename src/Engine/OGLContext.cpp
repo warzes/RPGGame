@@ -74,9 +74,9 @@ bool OGLContextInit()
 {
 	// glad: load all OpenGL function pointers
 	const int openGLVersion = gladLoadGL(RGFW_getProcAddress_OpenGL);
-	if (openGLVersion < GLAD_MAKE_VERSION(3, 3))
+	if (openGLVersion < GLAD_MAKE_VERSION(4, 6))
 	{
-		Fatal("Failed to initialize OpenGL 3.3 context!");
+		Fatal("Failed to initialize OpenGL 4.6 context!");
 		return false;
 	}
 
@@ -110,7 +110,6 @@ void OGLContextClose()
 {
 }
 //=============================================================================
-//=============================================================================
 void ogl::SetClearColor(float red, float green, float blue, float alpha)
 {
 	glClearColor(red, green, blue, alpha);
@@ -129,27 +128,32 @@ void ogl::Clear(bool colorBuffer, bool depthBuffer, bool stencilBuffer)
 	}
 }
 //=============================================================================
-void ogl::SetCapability(RenderingCapability capability, bool value)
+void ogl::SetCapability(ogl::RenderingCapability capability, bool value)
 {
 	(value ? glEnable : glDisable)(EnumToValue(capability));
 }
 //=============================================================================
-bool ogl::GetCapability(RenderingCapability capability)
+bool ogl::GetCapability(ogl::RenderingCapability capability)
 {
-	return glIsEnabled(EnumToValue(capability));
+	return glIsEnabled(EnumToValue(capability)) == GL_TRUE;
 }
 //=============================================================================
-void ogl::SetRasterizationMode(RasterizationMode rasterizationMode)
+void ogl::SetRasterizationLinesWidth(float width)
+{
+	glLineWidth(width);
+}
+//=============================================================================
+void ogl::SetRasterizationMode(ogl::RasterizationMode rasterizationMode)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, EnumToValue(rasterizationMode));
 }
 //=============================================================================
-void ogl::SetStencilAlgorithm(ComparisonFunc algorithm, int32_t reference, uint32_t mask)
+void ogl::SetStencilAlgorithm(ogl::ComparisonFunc algorithm, int32_t reference, uint32_t mask)
 {
 	glStencilFunc(EnumToValue(algorithm), reference, mask);
 }
 //=============================================================================
-void ogl::SetDepthAlgorithm(ComparisonFunc algorithm)
+void ogl::SetDepthAlgorithm(ogl::ComparisonFunc algorithm)
 {
 	glDepthFunc(EnumToValue(algorithm));
 }
@@ -159,22 +163,22 @@ void ogl::SetStencilMask(uint32_t mask)
 	glStencilMask(mask);
 }
 //=============================================================================
-void ogl::SetStencilOperations(Operation stencilFail, Operation depthFail, Operation bothPass)
+void ogl::SetStencilOperations(ogl::Operation stencilFail, ogl::Operation depthFail, ogl::Operation bothPass)
 {
 	glStencilOp(EnumToValue(stencilFail), EnumToValue(depthFail), EnumToValue(bothPass));
 }
 //=============================================================================
-void ogl::SetBlendingFunction(BlendFactor sourceFactor, BlendFactor destinationFactor)
+void ogl::SetBlendingFunction(ogl::BlendFactor sourceFactor, ogl::BlendFactor destinationFactor)
 {
 	glBlendFunc(EnumToValue(sourceFactor), EnumToValue(destinationFactor));
 }
 //=============================================================================
-void ogl::SetBlendingEquation(BlendEquation equation)
+void ogl::SetBlendingEquation(ogl::BlendEquation equation)
 {
 	glBlendEquation(EnumToValue(equation));
 }
 //=============================================================================
-void ogl::SetCullFace(CullFace cullFace)
+void ogl::SetCullFace(ogl::CullFace cullFace)
 {
 	glCullFace(EnumToValue(cullFace));
 }
@@ -194,23 +198,38 @@ void ogl::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 	glViewport(x, y, width, height);
 }
 //=============================================================================
-void ogl::DrawElements(PrimitiveMode primitiveMode, uint32_t indexCount)
+void ogl::DrawElements(ogl::PrimitiveMode primitiveMode, uint32_t indexCount)
 {
 	glDrawElements(EnumToValue(primitiveMode), indexCount, GL_UNSIGNED_INT, nullptr);
 }
 //=============================================================================
-void ogl::DrawElementsInstanced(PrimitiveMode primitiveMode, uint32_t indexCount, uint32_t instances)
+void ogl::DrawElementsInstanced(ogl::PrimitiveMode primitiveMode, uint32_t indexCount, uint32_t instances)
 {
 	glDrawElementsInstanced(EnumToValue(primitiveMode), indexCount, GL_UNSIGNED_INT, nullptr, instances);
 }
 //=============================================================================
-void ogl::DrawArrays(PrimitiveMode primitiveMode, uint32_t vertexCount)
+void ogl::DrawArrays(ogl::PrimitiveMode primitiveMode, uint32_t vertexCount)
 {
 	glDrawArrays(EnumToValue(primitiveMode), 0, vertexCount);
 }
 //=============================================================================
-void ogl::DrawArraysInstanced(PrimitiveMode primitiveMode, uint32_t vertexCount, uint32_t instances)
+void ogl::DrawArraysInstanced(ogl::PrimitiveMode primitiveMode, uint32_t vertexCount, uint32_t instances)
 {
 	glDrawArraysInstanced(EnumToValue(primitiveMode), 0, vertexCount, instances);
 }
+//=============================================================================
+#if GL_VERSION_4_0
+void ogl::DispatchCompute(uint32_t x, uint32_t y, uint32_t z)
+{
+	assert(x > 0 && y > 0 && z > 0 && "Dispatch work group count cannot be zero");
+	glDispatchCompute(x, y, z);
+}
+#endif
+//=============================================================================
+#if GL_VERSION_4_0
+void ogl::MemoryBarrier(ogl::MemoryBarrierFlags barriers)
+{
+	glMemoryBarrier(EnumToValue(barriers));
+}
+#endif
 //=============================================================================

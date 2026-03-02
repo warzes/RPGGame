@@ -11,6 +11,7 @@ namespace ogl
 	void SetCapability(RenderingCapability capability, bool value);
 	bool GetCapability(RenderingCapability capability);
 
+	void SetRasterizationLinesWidth(float width);
 	void SetRasterizationMode(RasterizationMode rasterizationMode);
 
 	void SetStencilAlgorithm(ComparisonFunc algorithm, int32_t reference, uint32_t mask);
@@ -32,4 +33,9 @@ namespace ogl
 	void DrawElementsInstanced(PrimitiveMode primitiveMode, uint32_t indexCount, uint32_t instances);
 	void DrawArrays(PrimitiveMode primitiveMode, uint32_t vertexCount);
 	void DrawArraysInstanced(PrimitiveMode primitiveMode, uint32_t vertexCount, uint32_t instances);
+
+#if GL_VERSION_4_0
+	void DispatchCompute(uint32_t x, uint32_t y, uint32_t z);
+	void MemoryBarrier(MemoryBarrierFlags barriers);
+#endif
 }

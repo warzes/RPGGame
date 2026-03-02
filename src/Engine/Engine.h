@@ -11,5 +11,6 @@ namespace engine
 
 	void DrawFPS();
 
+	float GetCurrentTime();
 	float GetDeltaTime();
 }

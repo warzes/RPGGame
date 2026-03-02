@@ -21,7 +21,7 @@ void errorFunc(RGFW_debugType type, RGFW_errorCode err, const char* msg) noexcep
 	Error("RGFW ERROR: " + std::string(msg));
 }
 //=============================================================================
-void windowResizeFunc(RGFW_window* win, i32 width, i32 height) noexcept
+void windowResizeFunc(RGFW_window* /*win*/, i32 width, i32 height) noexcept
 {
 	if (width < 0 || height < 0) return;
 	windowWidth = static_cast<uint16_t>(std::max(width, 1));
@@ -74,8 +74,8 @@ bool WindowInit(uint16_t width, uint16_t height, std::string_view title, bool vs
 #else
 	hints->noError = true;
 #endif
-	hints->major = 3;
-	hints->minor = 3;
+	hints->major = 4;
+	hints->minor = 6;
 
 	RGFW_setGlobalHints_OpenGL(hints);
 

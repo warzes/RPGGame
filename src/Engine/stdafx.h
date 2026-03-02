@@ -28,8 +28,12 @@
 #include <filesystem>
 #include <fstream>
 #include <regex>
+#include <initializer_list>
 #include <string>
 #include <string_view>
+#include <any>
+#include <variant>
+#include <array>
 #include <span>
 #include <vector>
 #include <unordered_map>

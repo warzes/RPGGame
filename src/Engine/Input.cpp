@@ -105,12 +105,12 @@ const glm::vec2& input::GetCursorPos() noexcept { return cursorPos; }
 const glm::vec2& input::GetCursorOffset() noexcept { return cursorOffset; }
 const glm::vec2& input::GetScrollOffset() noexcept { return scrollOffset; }
 //=============================================================================
-bool input::IsKeyDown(RGFW_key key) noexcept { return RGFW_isKeyDown(key); }
-bool input::IsKeyUp(RGFW_key key) noexcept { return !RGFW_isKeyDown(key); }
-bool input::IsKeyPressed(RGFW_key key) noexcept { return RGFW_isKeyPressed(key); }
-bool input::IsKeyReleased(RGFW_key key) noexcept { return RGFW_isKeyReleased(key); }
-bool input::IsMouseDown(RGFW_mouseButton key) noexcept { return RGFW_isMouseDown(key); }
-bool input::IsMouseUp(RGFW_mouseButton key) noexcept { return !RGFW_isMouseDown(key); }
-bool input::IsMousePressed(RGFW_mouseButton key) noexcept { return RGFW_isMousePressed(key); }
-bool input::IsMouseReleased(RGFW_mouseButton key) noexcept { return RGFW_isMouseReleased(key); }
+bool input::IsKeyDown(RGFW_key key) noexcept { return RGFW_isKeyDown(key) == RGFW_TRUE; }
+bool input::IsKeyUp(RGFW_key key) noexcept { return RGFW_isKeyDown(key) == RGFW_FALSE; }
+bool input::IsKeyPressed(RGFW_key key) noexcept { return RGFW_isKeyPressed(key) == RGFW_TRUE; }
+bool input::IsKeyReleased(RGFW_key key) noexcept { return RGFW_isKeyReleased(key) == RGFW_TRUE; }
+bool input::IsMouseDown(RGFW_mouseButton key) noexcept { return RGFW_isMouseDown(key) == RGFW_TRUE; }
+bool input::IsMouseUp(RGFW_mouseButton key) noexcept { return RGFW_isMouseDown(key) == RGFW_FALSE; }
+bool input::IsMousePressed(RGFW_mouseButton key) noexcept { return RGFW_isMousePressed(key) == RGFW_TRUE; }
+bool input::IsMouseReleased(RGFW_mouseButton key) noexcept { return RGFW_isMouseReleased(key) == RGFW_TRUE; }
 //=============================================================================

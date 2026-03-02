@@ -27,12 +27,6 @@
     <ClInclude Include="OGLBuffer.h">
       <Filter>OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="OGLShader.h">
-      <Filter>OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="OGLVertexAttribute.h">
-      <Filter>OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="OGLCore.h">
       <Filter>OpenGL</Filter>
     </ClInclude>
@@ -40,6 +34,18 @@
       <Filter>OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="OGLFramebuffer.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="OGLVertexArray.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="OGLShaderStage.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="OGLShaderProgram.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="OGLRenderbuffer.h">
       <Filter>OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
@@ -66,12 +72,6 @@
     <ClCompile Include="OGLBuffer.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="OGLShader.cpp">
-      <Filter>OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="OGLVertexAttribute.cpp">
-      <Filter>OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="OGLCore.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
@@ -79,6 +79,18 @@
       <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="OGLFramebuffer.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="OGLVertexArray.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="OGLShaderStage.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="OGLShaderProgram.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="OGLRenderbuffer.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
