@@ -7,19 +7,13 @@
 bool OGLContextInit();
 void OGLContextClose();
 //=============================================================================
-namespace input
-{
-	void Init();
-	void Update();
-}
+void InputInit();
+void InputUpdate();
 //=============================================================================
-namespace window
-{
-	bool Init(uint16_t width, uint16_t height, std::string_view title, bool vsync = false, bool resizable = true, bool maximized = false);
-	void Close() noexcept;
-	bool WindowShouldClose() noexcept;
-	void Swap();
-}
+bool WindowInit(uint16_t width, uint16_t height, std::string_view title, bool vsync = false, bool resizable = true, bool maximized = false);
+void WindowClose() noexcept;
+bool WindowShouldClose() noexcept;
+void WindowSwap();
 //=============================================================================
 extern RGFW_window* windowHandle;
 //=============================================================================
@@ -39,9 +33,9 @@ namespace
 //=============================================================================
 bool engine::Init(uint16_t width, uint16_t height, std::string_view title)
 {
-	if (!window::Init(width, height, title))
+	if (!WindowInit(width, height, title))
 		return false;
-	input::Init();
+	InputInit();
 
 	if (!OGLContextInit())
 		return false;
@@ -75,12 +69,12 @@ void engine::Close() noexcept
 	ImGui_ImplRgfw_Shutdown();
 	ImGui::DestroyContext();
 	OGLContextClose();
-	window::Close();
+	WindowClose();
 }
 //=============================================================================
 bool engine::ShouldClose()
 {
-	return window::WindowShouldClose();
+	return WindowShouldClose();
 }
 //=============================================================================
 void engine::BeginFrame()
@@ -122,8 +116,8 @@ void engine::EndFrame()
 		//EnableSRGB(true);
 	}
 
-	window::Swap();
-	input::Update();
+	WindowSwap();
+	InputUpdate();
 }
 //=============================================================================
 void engine::DrawFPS()

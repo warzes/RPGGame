@@ -8,14 +8,6 @@ uint16_t     windowWidth{ 0 };
 uint16_t     windowHeight{ 0 };
 float        windowAspect{ 1.0f };
 //=============================================================================
-namespace window
-{
-	bool Init(uint16_t width, uint16_t height, std::string_view title, bool vsync = false, bool resizable = true, bool maximized = false);
-	void Close() noexcept;
-	bool WindowShouldClose() noexcept;
-	void Swap();
-}
-//=============================================================================
 // Input.cpp
 void mouseNotifyFunc(RGFW_window* win, i32 x, i32 y, u8 status) noexcept;
 void mousePosFunc(RGFW_window* window, i32 xPos, i32 yPos, float vecX, float vecY) noexcept;
@@ -64,7 +56,7 @@ void focusFunc(RGFW_window* win, u8 inFocus) noexcept
 	else Debug("window out of focus");
 }
 //=============================================================================
-bool window::Init(uint16_t width, uint16_t height, std::string_view title, bool vsync, bool resizable, bool maximized)
+bool WindowInit(uint16_t width, uint16_t height, std::string_view title, bool vsync, bool resizable, bool maximized)
 {
 	if (!RGFW_init())
 	{
@@ -131,7 +123,7 @@ bool window::Init(uint16_t width, uint16_t height, std::string_view title, bool 
 	return true;
 }
 //=============================================================================
-void window::Close() noexcept
+void WindowClose() noexcept
 {
 	windowQuit = true;
 	if (windowHandle) RGFW_window_close(windowHandle);
@@ -139,12 +131,12 @@ void window::Close() noexcept
 	RGFW_deinit();
 }
 //=============================================================================
-bool window::WindowShouldClose() noexcept
+bool WindowShouldClose() noexcept
 {
 	return RGFW_window_shouldClose(windowHandle) == RGFW_TRUE || windowQuit;
 }
 //=============================================================================
-void window::Swap()
+void WindowSwap()
 {
 	RGFW_window_swapBuffers_OpenGL(windowHandle);
 }

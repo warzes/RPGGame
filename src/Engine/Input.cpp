@@ -10,12 +10,6 @@ TODO:
 
 */
 //=============================================================================
-namespace input
-{
-	void Init();
-	void Update();
-}
-//=============================================================================
 namespace window
 {
 	void Quit();
@@ -61,7 +55,7 @@ void keyFunc(RGFW_window* win, u8 key, RGFW_keymod mod, RGFW_bool repeat, RGFW_b
 	ImGui_ImplRgfw_KeyCallback(win, key, mod, repeat, pressed);
 }
 //=============================================================================
-void input::Init()
+void InputInit()
 {
 	cursorPos = cursorOffset = scrollOffset = glm::vec2(0.0f);
 
@@ -71,7 +65,7 @@ void input::Init()
 	cursorOffset.y = static_cast<float>(ypos);
 }
 //=============================================================================
-void input::Update()
+void InputUpdate()
 {
 	scrollOffset = glm::vec2(0);
 	cursorOffset = glm::vec2(0);
