@@ -16,4 +16,5 @@ private:
 	ogl::ShaderStage*   m_vs;
 	ogl::ShaderStage*   m_fs;
 	ogl::ShaderProgram* m_program;
+	size_t              m_vertSize;
 };

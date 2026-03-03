@@ -23,6 +23,7 @@ namespace ogl
 		VertexArray& operator=(VertexArray&&) = delete;
 		~VertexArray();
 
+		void SetLayout(VertexAttributeLayout attributes, Buffer& vertexBuffer);
 		void SetLayout(VertexAttributeLayout attributes, Buffer& vertexBuffer, Buffer& indexBuffer);
 		void ResetLayout();
 

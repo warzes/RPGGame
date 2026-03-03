@@ -72,16 +72,17 @@ void main()
 	program->Attach(*vs);
 	program->Attach(*fs);
 	program->Link();
-
-
-
-	m_gridModel
+	
+	if (!m_grid.Init())
+		return false;
 
 	return true;
 }
 //=============================================================================
 void GameScene::Close()
 {
+	m_grid.Close();
+
 	delete fs;
 	delete vs;
 	delete program;
@@ -124,7 +125,9 @@ void GameScene::draw()
 	// Matrices
 	glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	glm::mat4 view = m_data.camera->GetViewMatrix();
-	glm::mat4 proj = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.1f, 100.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.1f, 1000.0f);
+
+	m_grid.Draw(proj, view);
 
 	program->Bind();
 	program->SetUniform("viewMatrix", view);
