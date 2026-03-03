@@ -39,6 +39,9 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Game\WorldData</Filter>
     </ClCompile>
+    <ClCompile Include="MapGrid.cpp">
+      <Filter>Game\WorldData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -67,6 +70,9 @@
       <Filter>Game\WorldData</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
+      <Filter>Game\WorldData</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGrid.h">
       <Filter>Game\WorldData</Filter>
     </ClInclude>
   </ItemGroup>

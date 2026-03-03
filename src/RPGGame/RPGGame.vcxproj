@@ -101,6 +101,7 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapGrid.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="GameModel.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameWorldData.h" />
+    <ClInclude Include="MapGrid.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />

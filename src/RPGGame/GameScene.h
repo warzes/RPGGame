@@ -2,6 +2,7 @@
 
 #include "GameModel.h"
 #include "GameWorldData.h"
+#include "MapGrid.h"
 
 class GameScene final
 {
@@ -21,6 +22,7 @@ private:
 	void blittingToScreen(GLuint fbo, uint16_t srcWidth, uint16_t srcHeight);
 
 	GameWorldData m_data;
+	MapGrid       m_grid;
 
 	// temp
 	ogl::ShaderStage* vs;
