@@ -15,13 +15,73 @@
     <ClCompile Include="ExampleCompute.cpp">
       <Filter>examples</Filter>
     </ClCompile>
+    <ClCompile Include="GameApp.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Game\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Game\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Game\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Game\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Game\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Game\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Game\WorldData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Camera.h">
+      <Filter>Game\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Game\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Game\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Game\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Game\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Game\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModel.h">
+      <Filter>Game\WorldData</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWorldData.h">
+      <Filter>Game\WorldData</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Game\WorldData</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="examples">
       <UniqueIdentifier>{a055fbcf-1375-4873-aa11-93b46200cea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{614da8a5-7091-4710-a7b7-c99e1aa23b47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Framework">
+      <UniqueIdentifier>{96770404-44c2-4fe0-88c9-8e7449e2087f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\WorldData">
+      <UniqueIdentifier>{9a3925a5-6dc8-4a9c-8338-34e9d8fcccf9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
