@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "OGLTexture.h"
+
 struct Texture2D final
 {
 	bool operator==(const Texture2D& rhs) const

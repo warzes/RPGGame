@@ -1,5 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Model.h"
+#include "Log.h"
+#include "File.h"
 //=============================================================================
 bool Model::Load(const std::string& fileName)
 {

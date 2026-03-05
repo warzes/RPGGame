@@ -18,51 +18,27 @@
     <ClCompile Include="GameApp.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Game\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Game\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Game\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Game\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Game\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="AABB.cpp">
-      <Filter>Game\Framework</Filter>
-    </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>Game\WorldData</Filter>
     </ClCompile>
     <ClCompile Include="MapGrid.cpp">
-      <Filter>Game\WorldData</Filter>
+      <Filter>Game\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="MapLoadObjTile.cpp">
+      <Filter>Game\BlockMap</Filter>
+    </ClCompile>
+    <ClCompile Include="GeomTileMap.cpp">
+      <Filter>Game\BlockMap</Filter>
+    </ClCompile>
+    <ClCompile Include="GeomMap.cpp">
+      <Filter>Game\BlockMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Game\BlockMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Camera.h">
-      <Filter>Game\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Game\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Textures.h">
-      <Filter>Game\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Game\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Game\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="AABB.h">
-      <Filter>Game\Framework</Filter>
-    </ClInclude>
     <ClInclude Include="GameModel.h">
       <Filter>Game\WorldData</Filter>
     </ClInclude>
@@ -72,8 +48,21 @@
     <ClInclude Include="GameScene.h">
       <Filter>Game\WorldData</Filter>
     </ClInclude>
+    <ClInclude Include="Global.h" />
     <ClInclude Include="MapGrid.h">
-      <Filter>Game\WorldData</Filter>
+      <Filter>Game\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapLoadObjTile.h">
+      <Filter>Game\BlockMap</Filter>
+    </ClInclude>
+    <ClInclude Include="GeomTileMap.h">
+      <Filter>Game\BlockMap</Filter>
+    </ClInclude>
+    <ClInclude Include="GeomMap.h">
+      <Filter>Game\BlockMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Game\BlockMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -83,11 +72,14 @@
     <Filter Include="Game">
       <UniqueIdentifier>{614da8a5-7091-4710-a7b7-c99e1aa23b47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Framework">
-      <UniqueIdentifier>{96770404-44c2-4fe0-88c9-8e7449e2087f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\WorldData">
       <UniqueIdentifier>{9a3925a5-6dc8-4a9c-8338-34e9d8fcccf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Editor">
+      <UniqueIdentifier>{a1bd042e-1774-43f1-b172-a4024da4d621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\BlockMap">
+      <UniqueIdentifier>{20589e25-809b-4ff2-b005-f6635f263a19}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

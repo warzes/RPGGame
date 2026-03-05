@@ -69,6 +69,12 @@
 #include <stb/stb_image.h>
 #include <stb/stb_truetype.h>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+#include <tiny_obj_loader/tiny_obj_loader.h>
+
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif

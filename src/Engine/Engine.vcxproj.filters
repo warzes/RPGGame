@@ -48,6 +48,27 @@
     <ClInclude Include="OGLRenderbuffer.h">
       <Filter>OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryGenerator.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -93,6 +114,27 @@
     <ClCompile Include="OGLRenderbuffer.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryGenerator.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -106,6 +148,9 @@
     </Filter>
     <Filter Include="OpenGL">
       <UniqueIdentifier>{031d54dd-df92-4663-8c34-1a02f703cad5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{c56f5396-8999-4630-932d-f1184a8ce27e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

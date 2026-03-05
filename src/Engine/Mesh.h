@@ -2,6 +2,8 @@
 
 #include "Material.h"
 #include "AABB.h"
+#include "OGLBuffer.h"
+#include "OGLVertexArray.h"
 
 struct MeshVertex final
 {

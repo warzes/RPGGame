@@ -1,5 +1,8 @@
 ﻿#include "stdafx.h"
 #include "Textures.h"
+#include "Log.h"
+#include "File.h"
+#include "Hash.h"
 //=============================================================================
 struct TextureCache final
 {

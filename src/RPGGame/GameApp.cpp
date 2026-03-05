@@ -1,6 +1,8 @@
 ﻿#include "stdafx.h"
 #include "Camera.h"
 #include "GameScene.h"
+#include "Map.h"
+#include "GeomMap.h"
 //=============================================================================
 bool TexturesInit();
 void TexturesClose();
@@ -42,13 +44,19 @@ void GameApp()
 		ogl::SetCapability(ogl::RenderingCapability::DepthTest, true);
 
 		// Camera
-		Camera camera({ 0.0f, 0.0f, 5.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
+		Camera camera({ 0.0f, 5.0f, 5.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
 
 		GameScene scene;
 		scene.Init();
 
 		GameModel modelLevel;
 		modelLevel.model.Load("data/models/spaceCompound/spaceCompound.obj");
+
+		Map map;
+		MapChunk geommaps;
+
+		if (!geommaps.Init(map))
+			return;
 
 		while (!engine::ShouldClose())
 		{
@@ -67,7 +75,6 @@ void GameApp()
 			if (input::IsMouseDown(RGFW_mouseRight))
 			{
 				input::SetCursorVisible(false);
-				constexpr float CAMERA_SENSITIVITY = 0.1f;
 				camera.Rotate(input::GetCursorOffset().y * CAMERA_SENSITIVITY, input::GetCursorOffset().x * CAMERA_SENSITIVITY, 0.0f);
 			}
 			else if (input::IsMouseReleased(RGFW_mouseRight))
@@ -77,7 +84,28 @@ void GameApp()
 
 			scene.Bind(&camera);
 			scene.Bind(&modelLevel);
+			scene.Bind(geommaps.GetModel());
 			scene.Draw();
+
+			// ui
+
+			{
+				if (const ImGuiViewport* v = ImGui::GetMainViewport())
+				{
+					ImGui::SetNextWindowPos({ v->WorkPos.x + 15.0f, v->WorkPos.y + 15.0f }, ImGuiCond_Always, { 0.0f, 0.0f });
+				}
+				ImGui::SetNextWindowBgAlpha(0.30f);
+				ImGui::SetNextWindowSize(ImVec2(ImGui::CalcTextSize("VertexCount : __________").x, 0));
+				if (ImGui::Begin("##Map", nullptr,
+					ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings |
+					ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove))
+				{
+					ImGui::Text("Map Info :");
+					ImGui::Text("VertexCount : %i", (int)geommaps.GetVertexCount());
+					ImGui::Text("IndexCount  : %i", (int)geommaps.GetIndexCount());
+				}
+				ImGui::End();
+			}
 
 			engine::DrawFPS();
 			engine::EndFrame();

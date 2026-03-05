@@ -7,6 +7,9 @@
 #include <Engine/Hash.h>
 #include <Engine/File.h>
 
+// Math
+#include <Engine/AABB.h>
+
 // OpenGL
 #include <Engine/OGLCore.h>
 #include <Engine/OGLContext.h>
@@ -17,15 +20,16 @@
 #include <Engine/OGLTexture.h>
 #include <Engine/OGLFramebuffer.h>
 
+// Graphics
+#include <Engine/Textures.h>
+#include <Engine/Material.h>
+#include <Engine/Mesh.h>
+#include <Engine/Model.h>
+#include <Engine/GeometryGenerator.h>
+
 // App
 #include <Engine/Input.h>
 #include <Engine/Window.h>
 #include <Engine/Engine.h>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <assimp/cimport.h>
-#include <assimp/version.h>
-#include <assimp/GltfMaterial.h>
-#include <assimp/config.h>
+#include "Global.h"

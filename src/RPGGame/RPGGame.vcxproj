@@ -92,37 +92,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AABB.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ExampleCompute.cpp" />
     <ClCompile Include="ExampleCube.cpp" />
     <ClCompile Include="ExampleFramebuffer.cpp" />
     <ClCompile Include="ExampleTriangle.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GeomMap.cpp" />
+    <ClCompile Include="GeomTileMap.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapGrid.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="MapLoadObjTile.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AABB.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="GameModel.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameWorldData.h" />
+    <ClInclude Include="GeomMap.h" />
+    <ClInclude Include="GeomTileMap.h" />
+    <ClInclude Include="Global.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MapGrid.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Model.h" />
+    <ClInclude Include="MapLoadObjTile.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Textures.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
