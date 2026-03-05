@@ -48,7 +48,7 @@ in vec3 v_Normal;
 in vec2 v_UV;
 
 out vec4 FragColor;
-uniform vec3 u_Color = vec3(1.0, 1.0, 0.0);
+uniform vec3 u_Color = vec3(1.0, 1.0, 1.0);
 
 layout(binding = 0) uniform sampler2D diffuseTexture;
 
@@ -132,7 +132,7 @@ void GameScene::draw()
 	program->Bind();
 	program->SetUniform("viewMatrix", view);
 	program->SetUniform("projectionMatrix", proj);
-	program->SetUniform("u_Color", glm::vec3{ 1.0f, 1.0f, 0.0f });
+	program->SetUniform("u_Color", glm::vec3{ 1.0f, 1.0f, 1.0f });
 	
 	for (size_t i = 0; i < m_data.countGameModels; i++)
 	{

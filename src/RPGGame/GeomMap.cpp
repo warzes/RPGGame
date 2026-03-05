@@ -52,7 +52,7 @@ inline glm::vec3 getRotateAngle(RotateAngleY angle)
 //=============================================================================
 bool MapChunk::Init(Map& map)
 {
-	TileInfo tempTile;
+	TileInfo  tempTile;
 	tempTile.type = TileGeometryType::Block00;
 	tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", true);
 	tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
@@ -66,21 +66,21 @@ bool MapChunk::Init(Map& map)
 		}
 	}
 
-	tempTile.type = TileGeometryType::Block01;
-	tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", true);
-	tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
-	tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
-	tempTile.rotate = RotateAngleY::Rotate270;
-	map.SetGeomTile(TileBank::AddTileInfo(tempTile), 16, 17, 1);
-	tempTile.rotate = RotateAngleY::Rotate0;
-	map.SetGeomTile(TileBank::AddTileInfo(tempTile), 17, 16, 1);
-	tempTile.rotate = RotateAngleY::Rotate180;
-	map.SetGeomTile(TileBank::AddTileInfo(tempTile), 17, 18, 1);
-	tempTile.rotate = RotateAngleY::Rotate90;
-	map.SetGeomTile(TileBank::AddTileInfo(tempTile), 18, 17, 1);
-	tempTile.type = TileGeometryType::Block00;
-	tempTile.rotate = RotateAngleY::Rotate0;
-	map.SetGeomTile(TileBank::AddTileInfo(tempTile), 17, 17, 1);
+	//tempTile.type = TileGeometryType::Block01;
+	//tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", true);
+	//tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
+	//tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
+	//tempTile.rotate = RotateAngleY::Rotate270;
+	//map.SetGeomTile(TileBank::AddTileInfo(tempTile), 16, 17, 1);
+	//tempTile.rotate = RotateAngleY::Rotate0;
+	//map.SetGeomTile(TileBank::AddTileInfo(tempTile), 17, 16, 1);
+	//tempTile.rotate = RotateAngleY::Rotate180;
+	//map.SetGeomTile(TileBank::AddTileInfo(tempTile), 17, 18, 1);
+	//tempTile.rotate = RotateAngleY::Rotate90;
+	//map.SetGeomTile(TileBank::AddTileInfo(tempTile), 18, 17, 1);
+	//tempTile.type = TileGeometryType::Block00;
+	//tempTile.rotate = RotateAngleY::Rotate0;
+	//map.SetGeomTile(TileBank::AddTileInfo(tempTile), 17, 17, 1);
 
 	generateBufferMap(map);
 

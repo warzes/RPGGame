@@ -83,7 +83,7 @@ void GameApp()
 			}
 
 			scene.Bind(&camera);
-			scene.Bind(&modelLevel);
+			//scene.Bind(&modelLevel);
 			scene.Bind(geommaps.GetModel());
 			scene.Draw();
 
