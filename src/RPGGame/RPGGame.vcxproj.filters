@@ -27,10 +27,7 @@
     <ClCompile Include="MapLoadObjTile.cpp">
       <Filter>Game\BlockMap</Filter>
     </ClCompile>
-    <ClCompile Include="GeomTileMap.cpp">
-      <Filter>Game\BlockMap</Filter>
-    </ClCompile>
-    <ClCompile Include="GeomMap.cpp">
+    <ClCompile Include="Tile.cpp">
       <Filter>Game\BlockMap</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
@@ -55,10 +52,7 @@
     <ClInclude Include="MapLoadObjTile.h">
       <Filter>Game\BlockMap</Filter>
     </ClInclude>
-    <ClInclude Include="GeomTileMap.h">
-      <Filter>Game\BlockMap</Filter>
-    </ClInclude>
-    <ClInclude Include="GeomMap.h">
+    <ClInclude Include="Tile.h">
       <Filter>Game\BlockMap</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">

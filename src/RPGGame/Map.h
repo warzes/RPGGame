@@ -1,16 +1,12 @@
 ﻿#pragma once
 
-#include "GeomTileMap.h"
+#include "Tile.h"
+#include "GameModel.h"
 
-constexpr const size_t MAPCHUNKSIZE = 30;
+struct BlockModelInfo;
 
-/*
-TEMP: я сейчас храню информацию о тайле только геометрическую. а возможно нужна будет еще логическая-игровая.
-*/
-struct LogicTile final
-{
-	int t;
-};
+constexpr const size_t MAPCHUNKSIZE_XY = 50;
+constexpr const size_t MAPCHUNKSIZE_Z = 10;
 
 struct TileSelection final
 {
@@ -26,10 +22,15 @@ class Map final
 public:
 	Map();
 
-	void Clear();
-	void ClearGeomTile(size_t x, size_t y, size_t z);
-	void SetGeomTile(size_t tile, size_t x, size_t y, size_t z);
-	size_t GetGeomTile(size_t x, size_t y, size_t z) const;
+	void RecreateGeometry();
+	void DestroyGeometry();
+
+	void SetMapPosition(const glm::vec3& positions);
+
+	void ClearTiles();
+	void ClearTile(size_t x, size_t y, size_t z);
+	void SetTile(size_t tile, size_t x, size_t y, size_t z);
+	size_t GetTile(size_t x, size_t y, size_t z) const;
 
 	// находится ли позиция внутри карты
 	bool IsInBounds(size_t x, size_t y, size_t z) const;
@@ -40,7 +41,18 @@ public:
 	bool SaveToFile(const std::string& filename) const;
 	bool LoadFromFile(const std::string& filename);
 
+	GameModel* GetModel() noexcept { return &m_model; }
+	size_t GetVertexCount() const { return m_vertCount; }
+	size_t GetIndexCount() const { return m_indexCount; }
+
 private:
-	size_t m_geomMap[MAPCHUNKSIZE][MAPCHUNKSIZE][MAPCHUNKSIZE] = { 0 };
-	LogicTile m_logicMap[MAPCHUNKSIZE][MAPCHUNKSIZE][MAPCHUNKSIZE] = {};
+	void generateBufferMap();
+	void setVisibleBlock(const TileInfo& ti, BlockModelInfo& blockModelInfo, size_t x, size_t y, size_t z);
+
+	GameModel m_model;
+	size_t m_vertCount;
+	size_t m_indexCount;
+
+	size_t m_tiles[MAPCHUNKSIZE_XY][MAPCHUNKSIZE_XY][MAPCHUNKSIZE_Z] = { 0 };
+	glm::vec3 m_positions{ 0.0f };
 };

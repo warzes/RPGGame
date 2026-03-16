@@ -10,8 +10,8 @@ void ExampleCube();
 void ExampleFramebuffer();
 void ExampleCompute();
 
-https://www.youtube.com/shorts/rwHFLTLYvbk?feature=share
-эффекты тумана сделать аналог
+//https://www.youtube.com/shorts/rwHFLTLYvbk?feature=share
+//эффекты тумана сделать аналог
 
 void GameApp();
 //=============================================================================

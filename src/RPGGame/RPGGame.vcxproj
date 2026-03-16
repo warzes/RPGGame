@@ -98,8 +98,7 @@
     <ClCompile Include="ExampleTriangle.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="GeomMap.cpp" />
-    <ClCompile Include="GeomTileMap.cpp" />
+    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapGrid.cpp" />
@@ -113,8 +112,7 @@
     <ClInclude Include="GameModel.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameWorldData.h" />
-    <ClInclude Include="GeomMap.h" />
-    <ClInclude Include="GeomTileMap.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapGrid.h" />

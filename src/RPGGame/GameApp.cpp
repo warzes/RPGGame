@@ -2,7 +2,6 @@
 #include "Camera.h"
 #include "GameScene.h"
 #include "Map.h"
-#include "GeomMap.h"
 //=============================================================================
 bool TexturesInit();
 void TexturesClose();
@@ -37,6 +36,26 @@ void GameAppClose()
 	engine::Close();
 }
 //=============================================================================
+void LoadMap(Map& map)
+{
+	TileInfo  tempTile;
+	tempTile.type = TileGeometryType::Block00;
+	tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", true);
+	tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
+	tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
+	auto tempTileId = TileBank::AddTileInfo(tempTile);
+
+	for (size_t x = 0; x < 30; x++)
+	{
+		for (size_t y = 0; y < 30; y++)
+		{
+			map.SetTile(tempTileId, x, 14 + y, 0);
+		}
+	}
+
+	map.RecreateGeometry();
+}
+//=============================================================================
 void GameApp()
 {
 	if (GameAppInit())
@@ -49,14 +68,11 @@ void GameApp()
 		GameScene scene;
 		scene.Init();
 
-		GameModel modelLevel;
-		modelLevel.model.Load("data/models/spaceCompound/spaceCompound.obj");
+		//GameModel modelLevel;
+		//modelLevel.model.Load("data/models/spaceCompound/spaceCompound.obj");
 
 		Map map;
-		MapChunk geommaps;
-
-		if (!geommaps.Init(map))
-			return;
+		LoadMap(map);
 
 		while (!engine::ShouldClose())
 		{
@@ -84,7 +100,7 @@ void GameApp()
 
 			scene.Bind(&camera);
 			//scene.Bind(&modelLevel);
-			scene.Bind(geommaps.GetModel());
+			scene.Bind(map.GetModel());
 			scene.Draw();
 
 			// ui
@@ -101,8 +117,8 @@ void GameApp()
 					ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove))
 				{
 					ImGui::Text("Map Info :");
-					ImGui::Text("VertexCount : %i", (int)geommaps.GetVertexCount());
-					ImGui::Text("IndexCount  : %i", (int)geommaps.GetIndexCount());
+					ImGui::Text("VertexCount : %i", (int)map.GetVertexCount());
+					ImGui::Text("IndexCount  : %i", (int)map.GetIndexCount());
 				}
 				ImGui::End();
 			}
