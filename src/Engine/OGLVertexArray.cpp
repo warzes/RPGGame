@@ -11,7 +11,7 @@ uint32_t GetDataTypeSizeInBytes(ogl::DataType type)
 	case ogl::DataType::UnsignedShort: return sizeof(GLushort);
 	case ogl::DataType::Int: return sizeof(GLint);
 	case ogl::DataType::UnsignedInt: return sizeof(GLuint);
-	case ogl::DataType::Float: return sizeof(GLfloat);
+	case ogl::DataType::Float:  return sizeof(GLfloat);
 	case ogl::DataType::Double: return sizeof(GLdouble);
 	default: return 0;
 	}
@@ -37,7 +37,7 @@ ogl::VertexArray::~VertexArray()
 	glDeleteVertexArrays(1, &m_id);
 }
 //=============================================================================
-void ogl::VertexArray::SetLayout(VertexAttributeLayout attributes, Buffer& vertexBuffer)
+void ogl::VertexArray::SetLayoutOLD(VertexAttributeLayout attributes, Buffer& vertexBuffer)
 {
 	assert(!IsValid() && "Vertex array layout already set");
 
@@ -75,7 +75,7 @@ void ogl::VertexArray::SetLayout(VertexAttributeLayout attributes, Buffer& verte
 	vertexBuffer.Unbind();
 }
 //=============================================================================
-void ogl::VertexArray::SetLayout(VertexAttributeLayout attributes, Buffer& vertexBuffer, Buffer& indexBuffer)
+void ogl::VertexArray::SetLayoutOLD(VertexAttributeLayout attributes, Buffer& vertexBuffer, Buffer& indexBuffer)
 {
 	assert(!IsValid() && "Vertex array layout already set");
 
@@ -115,7 +115,7 @@ void ogl::VertexArray::SetLayout(VertexAttributeLayout attributes, Buffer& verte
 	vertexBuffer.Unbind();
 }
 //=============================================================================
-void ogl::VertexArray::ResetLayout()
+void ogl::VertexArray::ResetLayoutOLD()
 {
 	assert(IsValid() && "Vertex array layout not already set");
 
@@ -126,6 +126,36 @@ void ogl::VertexArray::ResetLayout()
 	}
 	m_attributeCount = 0;
 	Unbind();
+}
+//=============================================================================
+void ogl::VertexArray::EnableAttrib(GLuint index) const
+{
+	glEnableVertexArrayAttrib(m_id, index);
+}
+//=============================================================================
+void ogl::VertexArray::SetAttribFormat(GLuint index, GLint size, GLenum type, GLboolean normalized, GLuint relativeOffset) const
+{
+	glVertexArrayAttribFormat(m_id, index, size, type, normalized, relativeOffset);
+}
+//=============================================================================
+void ogl::VertexArray::SetAttribBinding(GLuint index, GLuint binding) const
+{
+	glVertexArrayAttribBinding(m_id, index, binding);
+}
+//=============================================================================
+void ogl::VertexArray::SetVertexBuffer(GLuint binding, GLuint buffer, GLintptr offset, GLsizei stride) const
+{
+	glVertexArrayVertexBuffer(m_id, binding, buffer, offset, stride);
+}
+//=============================================================================
+void ogl::VertexArray::SetElementBuffer(GLuint buffer) const
+{
+	glVertexArrayElementBuffer(m_id, buffer);
+}
+//=============================================================================
+void ogl::VertexArray::SetBindingDivisor(GLuint binding, GLuint divisor) const
+{
+	glVertexArrayBindingDivisor(m_id, binding, divisor);
 }
 //=============================================================================
 void ogl::VertexArray::Bind() const

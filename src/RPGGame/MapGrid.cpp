@@ -34,7 +34,7 @@ bool MapGrid::Init()
 	m_vb->Upload(gridVertices.data());
 
 	m_va = new ogl::VertexArray;
-	m_va->SetLayout({
+	m_va->SetLayoutOLD({
 			{ ogl::DataType::Float, 3 }
 		}, *m_vb);
 

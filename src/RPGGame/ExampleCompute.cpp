@@ -43,7 +43,7 @@ void ExampleCompute()
 		ib.Upload(quadIndices);
 
 		ogl::VertexArray va;
-		va.SetLayout({
+		va.SetLayoutOLD({
 			{ ogl::DataType::Float, 2 }
 			}, vb, ib);
 

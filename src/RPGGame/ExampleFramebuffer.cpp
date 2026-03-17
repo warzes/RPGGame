@@ -19,7 +19,7 @@ void ExampleFramebuffer()
 		ib.Upload(indices);
 
 		ogl::VertexArray va;
-		va.SetLayout({
+		va.SetLayoutOLD({
 				{ ogl::DataType::Float, 3 },
 				{ ogl::DataType::Float, 2 }
 			}, vb, ib);

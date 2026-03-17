@@ -23,9 +23,17 @@ namespace ogl
 		VertexArray& operator=(VertexArray&&) = delete;
 		~VertexArray();
 
-		void SetLayout(VertexAttributeLayout attributes, Buffer& vertexBuffer);
-		void SetLayout(VertexAttributeLayout attributes, Buffer& vertexBuffer, Buffer& indexBuffer);
-		void ResetLayout();
+		// OLD ==>
+		void SetLayoutOLD(VertexAttributeLayout attributes, Buffer& vertexBuffer);
+		void SetLayoutOLD(VertexAttributeLayout attributes, Buffer& vertexBuffer, Buffer& indexBuffer);
+		void ResetLayoutOLD();
+		// NEW ==>
+		void EnableAttrib(GLuint index) const;
+		void SetAttribFormat(GLuint index, GLint size, GLenum type, GLboolean normalized, GLuint relativeOffset) const;
+		void SetAttribBinding(GLuint index, GLuint binding) const;
+		void SetVertexBuffer(GLuint binding, GLuint buffer, GLintptr offset, GLsizei stride) const;
+		void SetElementBuffer(GLuint buffer) const;
+		void SetBindingDivisor(GLuint binding, GLuint divisor) const;
 
 		void Bind() const;
 		void Unbind() const;

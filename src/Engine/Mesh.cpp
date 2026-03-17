@@ -19,7 +19,7 @@ Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>&
 	}
 
 	// VAO
-	m_vao.SetLayout({
+	m_vao.SetLayoutOLD({
 			{ ogl::DataType::Float, 3 }, // Position
 			{ ogl::DataType::Float, 3 }, // Color
 			{ ogl::DataType::Float, 3 }, // Normal

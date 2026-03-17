@@ -56,7 +56,7 @@ void ExampleCube()
 		ib.Upload(indices);
 
 		ogl::VertexArray va;
-		va.SetLayout({
+		va.SetLayoutOLD({
 			{ ogl::DataType::Float, 3 }, // Position
 			{ ogl::DataType::Float, 2 }, // UV
 			{ ogl::DataType::Float, 3 }  // Normal

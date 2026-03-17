@@ -14,8 +14,13 @@ namespace ogl
 		Buffer& operator=(Buffer&&) = delete;
 		~Buffer();
 
-		uint64_t Allocate(uint64_t size, AccessSpecifier usage = AccessSpecifier::StaticDraw);
+		void Allocate(uint64_t size, AccessSpecifier usage = AccessSpecifier::StaticDraw);
+		void Allocate(std::span<const std::byte> data, AccessSpecifier usage = AccessSpecifier::StaticDraw);
+
 		void Upload(const void* data, std::optional<BufferMemoryRange> range = std::nullopt);
+
+		void* MapWrite(uint64_t offset, uint64_t size) const;
+		void Unmap() const;
 
 		void Bind(BufferType type, std::optional<uint32_t> index = std::nullopt);
 		void Unbind();
