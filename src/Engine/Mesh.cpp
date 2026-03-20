@@ -29,7 +29,7 @@ Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>&
 	//	}, m_vbo, m_ebo);
 
 	m_vao.SetVertexBuffer(0, m_vbo.GetID(), 0, sizeof(MeshVertex));
-	m_vao.SetElementBuffer(m_ebo.GetID());
+	if (!indices.empty()) m_vao.SetElementBuffer(m_ebo.GetID());
 	m_vao.EnableAttrib(0); // Position
 	m_vao.SetAttribFormat(0, 3, GL_FLOAT, GL_FALSE, offsetof(MeshVertex, position));
 	m_vao.EnableAttrib(1); // Color
