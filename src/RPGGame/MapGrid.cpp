@@ -34,9 +34,9 @@ bool MapGrid::Init()
 	m_vb->Upload(gridVertices.data());
 
 	m_va = new ogl::VertexArray;
-	m_va->SetLayoutOLD({
-			{ ogl::DataType::Float, 3 }
-		}, *m_vb);
+	//m_va->SetLayoutOLD({
+	//		{ ogl::DataType::Float, 3 }
+	//	}, *m_vb);
 
 	// Shaders
 	m_vs = new ogl::ShaderStage(ogl::ShaderType::Vertex);
@@ -73,6 +73,11 @@ void main()
 	m_program->Attach(*m_vs);
 	m_program->Attach(*m_fs);
 	m_program->Link();
+
+	m_va->SetVertexBuffer(0, m_vb->GetID(), 0, sizeof(float) * 3);
+	m_va->EnableAttrib(0);
+	m_va->SetAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
+	m_va->SetAttribBinding(0, 0);
 
 	return false;
 }
