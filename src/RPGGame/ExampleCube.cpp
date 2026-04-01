@@ -117,7 +117,7 @@ void main() {
 			if (input::IsKeyDown(RGFW_e)) camPos.y += speed;
 			if (input::IsKeyDown(RGFW_escape)) break;
 
-			ogl::SetViewport(0, 0, window::GetWidth(), window::GetHeight());
+			ogl::SetViewport({ window::GetWidth(), window::GetHeight() });
 			ogl::SetClearColor(0.3f, 0.4f, 0.9f, 1.0f);
 			ogl::Clear(true, true, true);
 

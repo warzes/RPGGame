@@ -369,6 +369,29 @@ namespace ogl
 	inline GLbitfield EnumToValue(MemoryBarrierFlags mode) noexcept;
 #endif
 
+	class Viewport final
+	{
+	public:
+		constexpr Viewport() = default;
+		constexpr Viewport(int width, int height) : m_x{ 0 }, m_y{ 0 }, m_width{ width }, m_height{ height } {}
+		constexpr Viewport(int x, int y, int width, int height) : m_x{ x }, m_y{ y }, m_width{ width }, m_height{ height } {}
+
+		constexpr auto GetX() const { return m_x; }
+		constexpr auto GetY() const { return m_y; }
+		constexpr auto GetWidth() const { return m_width; }
+		constexpr auto GetHeight() const { return m_height; }
+
+		constexpr float GetAspectRatio() const
+		{
+			return static_cast<float>(m_width) / m_height;
+		}
+	private:
+		int m_x{ 0 };
+		int m_y{ 0 };
+		int m_width{ 0 };
+		int m_height{ 0 };
+	};
+
 } // namespace ogl
 
 

@@ -193,9 +193,9 @@ void ogl::SetColorWriting(bool enableRed, bool enableGreen, bool enableBlue, boo
 	glColorMask(enableRed, enableGreen, enableBlue, enableAlpha);
 }
 //=============================================================================
-void ogl::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+void ogl::SetViewport(const Viewport& view)
 {
-	glViewport(x, y, width, height);
+	glViewport(view.GetX(), view.GetY(), view.GetWidth(), view.GetHeight());
 }
 //=============================================================================
 void ogl::DrawElements(ogl::PrimitiveMode primitiveMode, uint32_t indexCount)
