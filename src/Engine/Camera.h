@@ -28,6 +28,8 @@ public:
 
 	glm::mat4 GetViewMatrix();
 
+	const glm::vec3& GetPosition() const { return m_cameraPosition; }
+
 private:
 	glm::vec3 m_cameraPosition;
 	glm::vec3 m_cameraTarget;

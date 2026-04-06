@@ -10,6 +10,12 @@ bool TerraTest::Init()
 //=============================================================================
 void TerraTest::Close()
 {
+	m_terra.Close();
+}
+//=============================================================================
+void TerraTest::Update(const glm::mat4& proj, const glm::mat4& view, const glm::vec3& camPos)
+{
+	m_terra.Update(proj, view, camPos);
 }
 //=============================================================================
 void TerraTest::Draw(const glm::mat4& proj, const glm::mat4& view)

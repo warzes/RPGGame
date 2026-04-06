@@ -39,6 +39,9 @@
     <ClCompile Include="Terrain.cpp">
       <Filter>TerraTest</Filter>
     </ClCompile>
+    <ClCompile Include="EditorTerrain.cpp">
+      <Filter>TerraTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

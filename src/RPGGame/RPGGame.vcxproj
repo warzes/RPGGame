@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EditorTerrain.cpp" />
     <ClCompile Include="ExampleCompute.cpp" />
     <ClCompile Include="ExampleCube.cpp" />
     <ClCompile Include="ExampleFramebuffer.cpp" />

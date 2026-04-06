@@ -1,12 +1,8 @@
 ﻿#include "stdafx.h"
 #include "Terrain.h"
-
-#define DEFAULT_TERRAIN_HEIGHT 20
-#define DEFAULT_TERRAIN_CELL_SIZE 2
-#define DEFAULT_TERRAIN_NUM_X 8
-#define DEFAULT_TERRAIN_NUM_Z 8
-#define DEFAULT_TERRAIN_PGM_RES 255
-
+//=============================================================================
+void EditorUpdate(double dt, const glm::mat4& proj, const glm::mat4& view, const glm::vec3& camPos, Terrain& terrain);
+//=============================================================================
 bool Terrain::Init(const std::string& filename)
 {
 	this->filename = filename;
@@ -143,7 +139,21 @@ void main() {
 
 	return false;
 }
+//=============================================================================
+void Terrain::Close()
+{
+	if (vp) free(vp);
+	if (vn) free(vn);
 
+	delete vao;
+	delete vbo;
+	delete vboNormal;
+	delete ibo;
+	delete vs;
+	delete fs;
+	delete program;
+}
+//=============================================================================
 void Terrain::Draw(const glm::mat4& proj, const glm::mat4& view)
 {
 	program->Bind();
@@ -159,7 +169,193 @@ void Terrain::Draw(const glm::mat4& proj, const glm::mat4& view)
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_SHORT, 0);
 	vao->Unbind();
 }
+//=============================================================================
+void Terrain::Update(const glm::mat4& proj, const glm::mat4& view, const glm::vec3& camPos)
+{
+	EditorUpdate(engine::GetDeltaTime(), proj, view, camPos, *this);
+}
+//=============================================================================
+int Terrain::GetTerrainIndex(float x, float z)
+{
+	if (x<-width / 2 || x>width / 2 || z<-length / 2 || z>length / 2) return -1;
+	int row = (z + length / 2) / cell_size;
+	int col = (x + width / 2) / cell_size;
+	int i = num_verts_x * row + col;
 
+	float x_tl = vp[3 * i];
+	float z_tl = vp[3 * i + 2];
+	float x_t = (x - x_tl) / cell_size; // % along cell point is on x-axis
+	float z_t = (z - z_tl) / cell_size; // % along cell point is on z-axis
+
+	if (x_t > 0.5) i += 1;
+	if (z_t > 0.5) i += num_verts_x;
+
+	return i;
+}
+//=============================================================================
+float Terrain::GetHeightInterp(float x, float z)
+{
+	if (x<-width / 2 || x>width / 2 || z<-length / 2 || z>length / 2) return -INFINITY;
+
+	//Get index of top-left vert of quad containing x,z
+	int row = (z + length / 2) / cell_size;
+	int col = (x + width / 2) / cell_size;
+	int i = num_verts_x * row + col;
+
+	//Get heights of this quad's verts
+	float y_tl = vp[3 * i + 1];
+	float y_tr = vp[3 * (i + 1) + 1];
+	float y_bl = vp[3 * (i + num_verts_x) + 1];
+	float y_br = vp[3 * (i + num_verts_x + 1) + 1];
+
+	//Get x,z position of top-left vert
+	float x_tl = vp[3 * i];
+	float z_tl = vp[3 * i + 2];
+	float x_t = (x - x_tl) / cell_size; // % along cell point is on x-axis
+	float z_t = (z - z_tl) / cell_size; // % along cell point is on z-axis
+
+	// vec3 topleft  = vec3(x_tl, y_tl, z_tl);
+	// vec3 topright = vec3(vp[3*(i+1)], y_tr, vp[3*(i+1)+2]);
+	// vec3 botleft  = vec3(vp[3*(i+t.num_verts_x)], y_bl, vp[3*(i+t.num_verts_x)+2]);
+	// vec3 botright = vec3(vp[3*(i+t.num_verts_x+1)], y_br, vp[3*(i+t.num_verts_x+1)+2]);
+
+	// draw_point(topleft,  0.2, vec4(1,1,0,1));
+	// draw_point(topright, 0.2, vec4(1,1,0,1));
+	// draw_point(botleft,  0.2, vec4(1,1,0,1));
+	// draw_point(botright, 0.2, vec4(1,1,0,1));
+
+	//Barycentric Interpolation
+	glm::vec3 a = glm::vec3(x_tl + cell_size, 0, z_tl); //tr
+	glm::vec3 b = glm::vec3(x_tl, 0, z_tl + cell_size); //bl
+	glm::vec3 c; //will be tl or br depending on x,z
+	glm::vec3 p = glm::vec3(x, 0, z);
+	if (x_t + z_t > 1)
+		c = glm::vec3(x_tl + cell_size, 0, z_tl + cell_size); //br
+	else
+		c = glm::vec3(x_tl, 0, z_tl); //tl
+	float tri_area = cell_size / 2;
+
+	float u = (glm::length(glm::cross(b - p, c - p)) / (2 * cell_size)) / tri_area; //weight of a
+	float v = (glm::length(glm::cross(a - p, c - p)) / (2 * cell_size)) / tri_area; //weight of b
+	float w = (glm::length(glm::cross(a - p, b - p)) / (2 * cell_size)) / tri_area; //weight of c
+
+	if (x_t + z_t > 1)
+		return u * y_tr + v * y_bl + w * y_br;
+
+	return u * y_tr + v * y_bl + w * y_tl;
+}
+//=============================================================================
+glm::vec3 Terrain::GetNormalInterp(float x, float z)
+{
+	if (x<-width / 2 || x>width / 2 || z<-length / 2 || z>length / 2) return glm::vec3(-INFINITY, -INFINITY, -INFINITY);
+
+	//Get index of top-left vert of quad containing x,z
+	int row = (z + length / 2) / cell_size;
+	int col = (x + width / 2) / cell_size;
+	int i = num_verts_x * row + col;
+
+	//Get x,z position of top-left vert
+	float x_tl = vp[3 * i];
+	float z_tl = vp[3 * i + 2];
+	float x_t = (x - x_tl) / cell_size; // % along cell point is on x-axis
+	float z_t = (z - z_tl) / cell_size; // % along cell point is on z-axis
+
+	// Get surrounding normals
+	glm::vec3 norm_a = glm::vec3(vn[3 * (i + 1)], vn[3 * (i + 1) + 1], vn[3 * (i + 1) + 2]); //tr
+	glm::vec3 norm_b = glm::vec3(vn[3 * (i + num_verts_x)], vn[3 * (i + num_verts_x) + 1], vn[3 * (i + num_verts_x) + 2]); //bl
+	glm::vec3 norm_c;
+	if (x_t + z_t > cell_size) norm_c = glm::vec3(vn[3 * (i + num_verts_x + 1)], vn[3 * (i + num_verts_x + 1) + 1], vn[3 * (i + num_verts_x + 1) + 2]); //br
+	else norm_c = glm::vec3(vn[3 * i], vn[3 * i + 1], vn[3 * i + 2]); //tl
+
+	//Barycentric Interpolation
+	glm::vec3 a = glm::vec3(x_tl + cell_size, 0, z_tl); //tr
+	glm::vec3 b = glm::vec3(x_tl, 0, z_tl + cell_size); //bl
+	glm::vec3 c; //will be tl or br depending on x,z
+	glm::vec3 p = glm::vec3(x, 0, z);
+	if (x_t + z_t > cell_size) c = glm::vec3(x_tl + cell_size, 0, z_tl + cell_size); //br
+	else c = glm::vec3(x_tl, 0, z_tl); //tl
+	float tri_area = cell_size / 2;
+
+	float u = (glm::length(glm::cross(b - p, c - p)) / 2) / tri_area; //weight of a
+	float v = (glm::length(glm::cross(a - p, c - p)) / 2) / tri_area; //weight of b
+	float w = (glm::length(glm::cross(a - p, b - p)) / 2) / tri_area; //weight of c
+
+	return glm::normalize(norm_a * u + norm_b * v + norm_c * w);
+}
+//=============================================================================
+glm::vec3 Terrain::GetDisplacement(float x, float y, float z)
+{
+	if (x<-width / 2 || x>width / 2 || z<-length / 2 || z>length / 2) return glm::vec3(-INFINITY, -INFINITY, -INFINITY);
+
+	//Get index of top-left vert of quad containing x,z
+	int row = (z + length) / cell_size;
+	int col = (x + width) / cell_size;
+	int i = num_verts_x * row + col;
+
+	//Get x,z position of top-left vert
+	float x_tl = vp[3 * i];
+	float z_tl = vp[3 * i + 2];
+	float x_t = (x - x_tl) / cell_size; // % along cell point is on x-axis
+	float z_t = (z - z_tl) / cell_size; // % along cell point is on z-axis
+
+	// Get surrounding normals
+	glm::vec3 norm_a = glm::vec3(vn[3 * (i + 1)], vn[3 * (i + 1) + 1], vn[3 * (i + 1) + 2]); //tr
+	glm::vec3 norm_b = glm::vec3(vn[3 * (i + num_verts_x)], vn[3 * (i + num_verts_x) + 1], vn[3 * (i + num_verts_x) + 2]); //bl
+	glm::vec3 norm_c;
+	if (x_t + z_t > cell_size) norm_c = glm::vec3(vn[3 * (i + num_verts_x + 1)], vn[3 * (i + num_verts_x + 1) + 1], vn[3 * (i + num_verts_x + 1) + 2]); //br
+	else norm_c = glm::vec3(vn[3 * i], vn[3 * i + 1], vn[3 * i + 2]); //tl
+
+	//Barycentric Interpolation
+	glm::vec3 a = glm::vec3(x_tl + cell_size, 0, z_tl); //tr
+	glm::vec3 b = glm::vec3(x_tl, 0, z_tl + cell_size); //bl
+	glm::vec3 c; //will be tl or br depending on x,z
+	glm::vec3 p = glm::vec3(x, 0, z);
+	if (x_t + z_t > cell_size) c = glm::vec3(x_tl + cell_size, 0, z_tl + cell_size); //br
+	else c = glm::vec3(x_tl, 0, z_tl); //tl
+	float tri_area = cell_size / 2;
+
+	float u = (glm::length(glm::cross(b - p, c - p)) / 2) / tri_area; //weight of a
+	float v = (glm::length(glm::cross(a - p, c - p)) / 2) / tri_area; //weight of b
+	float w = (glm::length(glm::cross(a - p, b - p)) / 2) / tri_area; //weight of c
+
+	glm::vec3 norm = glm::normalize(norm_a * u + norm_b * v + norm_c * w);
+	glm::vec3 top_rgt = a;
+	top_rgt.y = vp[3 * (i + 1) + 1];
+	float disp = glm::dot(glm::vec3(x, y, z) - top_rgt, norm);
+
+	//DEBUG: Draw tri's normals
+	// a.y = t.vp[3*(i+1) + 1];
+	// b.y = t.vp[3*(i+t_num_verts_x) + 1];
+	// if(x_t+z_t > t.cell_size) c.y = t.vp[3*(i+t.num_verts_x+1) + 1]; //br
+	// else c.y = t.vp[3*i + 1];; //tl
+
+	// draw_vec(a, norm_a, vec4(0.8f, 0.7f, 0.1f, 1));
+	// draw_vec(b, norm_b, vec4(0.8f, 0.7f, 0.1f, 1));
+	// draw_vec(c, norm_c, vec4(0.8f, 0.7f, 0.1f, 1));
+
+	return norm * disp;
+}
+//=============================================================================
+void Terrain::SaveTerrain()
+{
+	FILE* fp;
+	auto err = fopen_s(&fp, filename.c_str(), "w");
+	fprintf(fp, "P2\n");
+	fprintf(fp, "%d %d \n", num_verts_x, num_verts_z);
+	fprintf(fp, "%d\n", pgm_res); //Colour resolution
+
+	for (int i = 0; i < num_verts_z; i++)
+	{
+		for (int j = 0; j < num_verts_x; j++)
+		{
+			int index = num_verts_x * i + j;
+			fprintf(fp, "%d ", int(pgm_res * vp[3 * index + 1] / height));
+		}
+		fprintf(fp, "\n");
+	}
+	fclose(fp);
+}
+//=============================================================================
 //Utility function: reads past comments, spaces and newlines in a pgm file
 void _pgm_skip_fluff(FILE* fp)
 {
@@ -169,7 +365,7 @@ void _pgm_skip_fluff(FILE* fp)
 
 	fseek(fp, -1, SEEK_CUR); //rewind 1 char
 }
-
+//=============================================================================
 bool Terrain::loadTerrain()
 {
 	FILE* fp;
@@ -255,7 +451,7 @@ bool Terrain::loadTerrain()
 	fclose(fp);
 	return true;
 }
-
+//=============================================================================
 void Terrain::recalculateNormals()
 {
 	for (int i = 0; i < (point_count); i++)
@@ -285,3 +481,4 @@ void Terrain::recalculateNormals()
 	vboNormal->Allocate(sizeof(float) * point_count * 3, ogl::AccessSpecifier::StaticDraw);
 	vboNormal->Upload(vn);
 }
+//=============================================================================

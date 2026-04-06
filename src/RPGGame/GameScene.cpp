@@ -118,6 +118,10 @@ void GameScene::beginDraw()
 {
 	const auto wndWidth = window::GetWidth();
 	const auto wndHeight = window::GetHeight();
+
+	glm::mat4 view = m_data.camera->GetViewMatrix();
+	glm::mat4 proj = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.1f, 1000.0f);
+	m_terra.Update(proj, view, m_data.camera->GetPosition());
 }
 //=============================================================================
 void GameScene::draw()
