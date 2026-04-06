@@ -3,6 +3,7 @@
 #include "GameModel.h"
 #include "GameWorldData.h"
 #include "MapGrid.h"
+#include "TerraTest.h"
 
 class GameScene final
 {
@@ -23,6 +24,7 @@ private:
 
 	GameWorldData m_data;
 	MapGrid       m_grid;
+	TerraTest     m_terra;
 
 	// temp
 	ogl::ShaderStage* vs;

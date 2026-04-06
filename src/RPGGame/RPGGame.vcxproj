@@ -98,6 +98,8 @@
     <ClCompile Include="ExampleTriangle.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TerraTest.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -112,6 +114,8 @@
     <ClInclude Include="GameModel.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameWorldData.h" />
+    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TerraTest.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Map.h" />

@@ -79,7 +79,7 @@ void main()
 	m_va->SetAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
 	m_va->SetAttribBinding(0, 0);
 
-	return false;
+	return true;
 }
 //=============================================================================
 void MapGrid::Close()

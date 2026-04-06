@@ -76,11 +76,15 @@ void main()
 	if (!m_grid.Init())
 		return false;
 
+	if (!m_terra.Init())
+		return false;
+
 	return true;
 }
 //=============================================================================
 void GameScene::Close()
 {
+	m_terra.Close();
 	m_grid.Close();
 
 	delete fs;
@@ -128,6 +132,7 @@ void GameScene::draw()
 	glm::mat4 proj = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.1f, 1000.0f);
 
 	m_grid.Draw(proj, view);
+	m_terra.Draw(proj, view);
 
 	program->Bind();
 	program->SetUniform("viewMatrix", view);

@@ -68,8 +68,8 @@ void GameApp()
 		GameScene scene;
 		scene.Init();
 
-		//GameModel modelLevel;
-		//modelLevel.model.Load("data/models/spaceCompound/spaceCompound.obj");
+		GameModel modelLevel;
+		modelLevel.model.Load("data/models/spaceCompound/spaceCompound.obj");
 
 		Map map;
 		LoadMap(map);
@@ -100,7 +100,7 @@ void GameApp()
 
 			scene.Bind(&camera);
 			//scene.Bind(&modelLevel);
-			scene.Bind(map.GetModel());
+			//scene.Bind(map.GetModel());
 			scene.Draw();
 
 			// ui

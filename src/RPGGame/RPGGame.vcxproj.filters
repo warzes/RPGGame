@@ -33,6 +33,12 @@
     <ClCompile Include="Map.cpp">
       <Filter>Game\BlockMap</Filter>
     </ClCompile>
+    <ClCompile Include="TerraTest.cpp">
+      <Filter>TerraTest</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>TerraTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -58,6 +64,12 @@
     <ClInclude Include="Map.h">
       <Filter>Game\BlockMap</Filter>
     </ClInclude>
+    <ClInclude Include="TerraTest.h">
+      <Filter>TerraTest</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>TerraTest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="examples">
@@ -74,6 +86,9 @@
     </Filter>
     <Filter Include="Game\BlockMap">
       <UniqueIdentifier>{20589e25-809b-4ff2-b005-f6635f263a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TerraTest">
+      <UniqueIdentifier>{48a8fdcc-c05f-409d-9a3c-f4d01f56e742}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

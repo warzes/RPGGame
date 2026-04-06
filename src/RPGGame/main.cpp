@@ -10,7 +10,7 @@ void ExampleCube();
 void ExampleFramebuffer();
 void ExampleCompute();
 
-blokletix - блоки
+//blokletix - блоки
 
 //https://www.youtube.com/shorts/rwHFLTLYvbk?feature=share
 //эффекты тумана сделать аналог
