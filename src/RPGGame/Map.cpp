@@ -2,23 +2,6 @@
 #include "Map.h"
 #include "MapLoadObjTile.h"
 //=============================================================================
-size_t addMeshInfo(std::vector<MeshInfo>& meshInfo, Texture2D texId)
-{
-	for (size_t i = 0; i < meshInfo.size(); i++)
-	{
-		if (meshInfo[i].material->diffuseTextures[0] == texId)
-		{
-			return i;
-		}
-	}
-
-	MeshInfo nmi{};
-	nmi.material = Material();
-	nmi.material->diffuseTextures.push_back(texId);
-	meshInfo.push_back(nmi);
-	return meshInfo.size() - 1;
-}
-//=============================================================================
 inline std::string getFileNameBlock(TileGeometryType type)
 {
 	switch (type)
@@ -66,6 +49,20 @@ bool testVisBlock(Map& map, TileGeometryType tile, size_t x, size_t y, size_t z)
 		}
 	}
 	return false;
+}
+//=============================================================================
+void setVisibleBlock(Map& map, const TileInfo& ti, TempBlockInfo& blockModelInfo, size_t x, size_t y, size_t z)
+{
+	blockModelInfo.rightVisible = blockModelInfo.leftVisible = true;
+	blockModelInfo.forwardVisible = blockModelInfo.backVisible = true;
+	blockModelInfo.bottomVisible = blockModelInfo.topVisible = true;
+
+	if (x > 0)                   blockModelInfo.rightVisible = !testVisBlock(map, ti.type, x - 1, y, z);
+	if (x < MAPCHUNKSIZE_XY - 1) blockModelInfo.leftVisible = !testVisBlock(map, ti.type, x + 1, y, z);
+	if (y > 0)                   blockModelInfo.forwardVisible = !testVisBlock(map, ti.type, x, y - 1, z);
+	if (y < MAPCHUNKSIZE_XY - 1) blockModelInfo.backVisible = !testVisBlock(map, ti.type, x, y + 1, z);
+	if (z > 0)                   blockModelInfo.bottomVisible = !testVisBlock(map, ti.type, x, y, z - 1);
+	if (z < MAPCHUNKSIZE_Z - 1)  blockModelInfo.topVisible = !testVisBlock(map, ti.type, x, y, z + 1);
 }
 //=============================================================================
 Map::Map()
@@ -283,13 +280,29 @@ bool Map::LoadFromFile(const std::string& filename)
 	return true;
 }
 //=============================================================================
+void getTempBlockInfo(Map& map, TempBlockInfo& blockInfo, const TileInfo& tile, size_t ix, size_t iy, size_t iz)
+{
+	const glm::vec3 position = glm::vec3(
+		float(ix) - MAPOFFSET_XY,
+		float(iz) + 0.5f,
+		float(iy) - MAPOFFSET_XY);
+
+	blockInfo.color = tile.color;
+	blockInfo.center = position;
+	blockInfo.rotate = getRotateAngle(tile.rotate);
+	setVisibleBlock(map, tile, blockInfo, ix, iy, iz);
+	blockInfo.modelPath = getFileNameBlock(tile.type);
+	blockInfo.textureWall = tile.textureWall;
+	blockInfo.textureFloor = tile.textureFloor;
+	blockInfo.textureCeil = tile.textureCeil;
+}
+//=============================================================================
 void Map::generateBufferMap()
 {
 	std::vector<MeshInfo> meshInfo;
-	m_vertCount = 0;
-	m_indexCount = 0;
+	TempBlockInfo blockInfo{};
 
-	const float mapOffsetXY = MAPCHUNKSIZE_XY / 2.0f;
+	// формирование информации о тайлах
 	for (size_t iy = 0; iy < MAPCHUNKSIZE_XY; iy++)
 	{
 		for (size_t ix = 0; ix < MAPCHUNKSIZE_XY; ix++)
@@ -298,46 +311,23 @@ void Map::generateBufferMap()
 			{
 				size_t currentTile = GetTile(ix, iy, iz);
 				if (currentTile == NoTile) continue;
+				const auto& tile = TileBank::GetTileInfo(currentTile);
 
-				const auto& id = TileBank::GetTileInfo(currentTile);
-
-				const glm::vec3 center = glm::vec3(
-					float(ix) - mapOffsetXY,
-					float(iz) + 0.5f,
-					float(iy) - mapOffsetXY);
-
-				BlockModelInfo blockModelInfo{};
-				blockModelInfo.color = id.color;
-				blockModelInfo.center = center;
-				blockModelInfo.rotate = getRotateAngle(id.rotate);
-				setVisibleBlock(id, blockModelInfo, ix, iy, iz);
-				blockModelInfo.modelPath = getFileNameBlock(id.type);
-
-				size_t idWall = addMeshInfo(meshInfo, id.textureWall);
-				size_t idFloor = addMeshInfo(meshInfo, id.textureFloor);
-				size_t idCeil = addMeshInfo(meshInfo, id.textureCeil);
-
-				AddObjModel(blockModelInfo, meshInfo[idWall], meshInfo[idCeil], meshInfo[idFloor]);
+				getTempBlockInfo(*this, blockInfo, tile, ix, iy, iz);
+				AddObjModel(blockInfo, meshInfo);
 			}
 		}
 	}
 
+	m_vertCount = 0;
+	m_indexCount = 0;
 	for (size_t i = 0; i < meshInfo.size(); i++)
 	{
 		m_vertCount += meshInfo[i].vertices.size();
 		m_indexCount += meshInfo[i].indices.size();
 	}
 
+	// TODO: можно ведь не пересоздавать модель, если количество вершин/индексов осталось прежним
 	m_model.model.Create(meshInfo);
-}
-//=============================================================================
-void Map::setVisibleBlock(const TileInfo& ti, BlockModelInfo& blockModelInfo, size_t x, size_t y, size_t z)
-{
-	if (x > 0)                   blockModelInfo.rightVisible   = !testVisBlock(*this, ti.type, x - 1, y, z);
-	if (x < MAPCHUNKSIZE_XY - 1) blockModelInfo.leftVisible    = !testVisBlock(*this, ti.type, x + 1, y, z);
-	if (y > 0)                   blockModelInfo.forwardVisible = !testVisBlock(*this, ti.type, x, y - 1, z);
-	if (y < MAPCHUNKSIZE_XY - 1) blockModelInfo.backVisible    = !testVisBlock(*this, ti.type, x, y + 1, z);
-	if (z > 0)                   blockModelInfo.bottomVisible  = !testVisBlock(*this, ti.type, x, y, z - 1);
-	if (z < MAPCHUNKSIZE_Z - 1)  blockModelInfo.topVisible     = !testVisBlock(*this, ti.type, x, y, z + 1);
 }
 //=============================================================================

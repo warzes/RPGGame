@@ -19,7 +19,7 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
-      <Filter>Game\WorldData</Filter>
+      <Filter>Game\scene</Filter>
     </ClCompile>
     <ClCompile Include="MapGrid.cpp">
       <Filter>Game\Editor</Filter>
@@ -34,25 +34,22 @@
       <Filter>Game\BlockMap</Filter>
     </ClCompile>
     <ClCompile Include="TerraTest.cpp">
-      <Filter>TerraTest</Filter>
+      <Filter>examples\TerraTest</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
-      <Filter>TerraTest</Filter>
+      <Filter>examples\TerraTest</Filter>
     </ClCompile>
     <ClCompile Include="EditorTerrain.cpp">
-      <Filter>TerraTest</Filter>
+      <Filter>examples\TerraTest</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewWorldData.cpp">
+      <Filter>Game\Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="GameModel.h">
-      <Filter>Game\WorldData</Filter>
-    </ClInclude>
-    <ClInclude Include="GameWorldData.h">
-      <Filter>Game\WorldData</Filter>
-    </ClInclude>
     <ClInclude Include="GameScene.h">
-      <Filter>Game\WorldData</Filter>
+      <Filter>Game\scene</Filter>
     </ClInclude>
     <ClInclude Include="Global.h" />
     <ClInclude Include="MapGrid.h">
@@ -68,10 +65,16 @@
       <Filter>Game\BlockMap</Filter>
     </ClInclude>
     <ClInclude Include="TerraTest.h">
-      <Filter>TerraTest</Filter>
+      <Filter>examples\TerraTest</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
-      <Filter>TerraTest</Filter>
+      <Filter>examples\TerraTest</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModel.h">
+      <Filter>Game\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewWorldData.h">
+      <Filter>Game\Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -81,16 +84,19 @@
     <Filter Include="Game">
       <UniqueIdentifier>{614da8a5-7091-4710-a7b7-c99e1aa23b47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\WorldData">
-      <UniqueIdentifier>{9a3925a5-6dc8-4a9c-8338-34e9d8fcccf9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Editor">
       <UniqueIdentifier>{a1bd042e-1774-43f1-b172-a4024da4d621}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\BlockMap">
       <UniqueIdentifier>{20589e25-809b-4ff2-b005-f6635f263a19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TerraTest">
+    <Filter Include="Game\Framework">
+      <UniqueIdentifier>{2bd3c970-4c82-4e47-9429-fd5f790a6f5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\scene">
+      <UniqueIdentifier>{9a3925a5-6dc8-4a9c-8338-34e9d8fcccf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\TerraTest">
       <UniqueIdentifier>{48a8fdcc-c05f-409d-9a3c-f4d01f56e742}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

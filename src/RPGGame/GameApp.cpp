@@ -11,13 +11,6 @@ void TexturesClose();
 также примеры - это стратегия pharaoh и timberborn
 https://v3x3d.itch.io/mini-medieval
 */
-
-/*
-TODO:
-- вывод трехмерных примитивов (куб, сфера, цилиндр)
-- генерация тайлов
-- режим игры/редактора
-*/
 //=============================================================================
 bool GameAppInit()
 {
@@ -100,7 +93,7 @@ void GameApp()
 
 			scene.Bind(&camera);
 			//scene.Bind(&modelLevel);
-			//scene.Bind(map.GetModel());
+			scene.Bind(map.GetModel());
 			scene.Draw();
 
 			// ui

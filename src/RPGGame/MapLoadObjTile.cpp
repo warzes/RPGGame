@@ -23,7 +23,7 @@ struct IndexLess
 	}
 };
 //=============================================================================
-void ProcessModelData(const ObjModelData& model_data, const BlockModelInfo& modelInfo, MeshInfo& meshWall, MeshInfo& meshCeil, MeshInfo& meshFloor)
+void ProcessModelData(const ObjModelData& model_data, const TempBlockInfo& modelInfo, MeshInfo& meshWall, MeshInfo& meshCeil, MeshInfo& meshFloor)
 {
 	glm::mat4 rotation_matrix(1.0f);
 
@@ -216,8 +216,33 @@ void ProcessModelData(const ObjModelData& model_data, const BlockModelInfo& mode
 	}
 }
 //=============================================================================
-void AddObjModel(const BlockModelInfo& modelInfo, MeshInfo& meshWall, MeshInfo& meshCeil, MeshInfo& meshFloor)
+size_t addMeshInfo(std::vector<MeshInfo>& meshInfo, Texture2D texId)
 {
+	for (size_t i = 0; i < meshInfo.size(); i++)
+	{
+		if (meshInfo[i].material->diffuseTextures[0] == texId)
+		{
+			return i;
+		}
+	}
+
+	MeshInfo nmi{};
+	nmi.material = Material();
+	nmi.material->diffuseTextures.push_back(texId);
+	meshInfo.push_back(nmi);
+	return meshInfo.size() - 1;
+}
+//=============================================================================
+void AddObjModel(const TempBlockInfo& modelInfo, std::vector<MeshInfo>& meshInfo)
+{
+	size_t idWall = addMeshInfo(meshInfo, modelInfo.textureWall);
+	size_t idFloor = addMeshInfo(meshInfo, modelInfo.textureFloor);
+	size_t idCeil = addMeshInfo(meshInfo, modelInfo.textureCeil);
+
+	MeshInfo& meshWall = meshInfo[idWall];
+	MeshInfo& meshCeil = meshInfo[idCeil];
+	MeshInfo& meshFloor = meshInfo[idFloor];
+
 	// Проверяем, есть ли модель в кэше
 	auto it = model_cache.find(modelInfo.modelPath);
 	if (it != model_cache.end())

@@ -30,6 +30,8 @@ public:
 	Mesh(Mesh&&) = delete;
 	~Mesh();
 
+	void Draw();
+
 	Mesh& operator=(const Mesh&) = delete;
 	Mesh& operator=(Mesh&&) = delete;
 

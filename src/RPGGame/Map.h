@@ -3,10 +3,13 @@
 #include "Tile.h"
 #include "GameModel.h"
 
-struct BlockModelInfo;
+struct TempBlockInfo;
 
 constexpr const size_t MAPCHUNKSIZE_XY = 50;
 constexpr const size_t MAPCHUNKSIZE_Z = 10;
+
+
+constexpr const size_t MAPOFFSET_XY = MAPCHUNKSIZE_XY / 2.0f;
 
 struct TileSelection final
 {
@@ -47,7 +50,7 @@ public:
 
 private:
 	void generateBufferMap();
-	void setVisibleBlock(const TileInfo& ti, BlockModelInfo& blockModelInfo, size_t x, size_t y, size_t z);
+	//void setVisibleBlock(const TileInfo& ti, TempBlockInfo& blockModelInfo, size_t x, size_t y, size_t z);
 
 	GameModel m_model;
 	size_t m_vertCount;

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "GameModel.h"
-#include "GameWorldData.h"
+#include "ViewWorldData.h"
 #include "MapGrid.h"
 #include "TerraTest.h"
 
@@ -22,12 +22,11 @@ private:
 
 	void blittingToScreen(GLuint fbo, uint16_t srcWidth, uint16_t srcHeight);
 
-	GameWorldData m_data;
+	ViewWorldData m_data;
 	MapGrid       m_grid;
 	TerraTest     m_terra;
 
-	// temp
-	ogl::ShaderStage* vs;
-	ogl::ShaderStage* fs;
-	ogl::ShaderProgram* program;
+	ogl::ShaderStage*   m_vs;
+	ogl::ShaderStage*   m_fs;
+	ogl::ShaderProgram* m_program;
 };

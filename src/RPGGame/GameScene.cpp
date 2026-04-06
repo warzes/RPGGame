@@ -10,8 +10,8 @@ bool GameScene::Init()
 	const auto wndHeight = window::GetHeight();
 
 	// Shaders
-	vs = new ogl::ShaderStage(ogl::ShaderType::Vertex);
-	vs->Upload(R"(
+	m_vs = new ogl::ShaderStage(ogl::ShaderType::Vertex);
+	m_vs->Upload(R"(
 #version 450 core
 
 layout(location = 0) in vec3 vertexPosition;
@@ -37,10 +37,10 @@ void main()
 	v_Color = vertexColor;
 }
 )");
-	vs->Compile();
+	m_vs->Compile();
 
-	fs = new ogl::ShaderStage(ogl::ShaderType::Fragment);
-	fs->Upload(R"(
+	m_fs = new ogl::ShaderStage(ogl::ShaderType::Fragment);
+	m_fs->Upload(R"(
 #version 450 core
 
 in vec3 v_Color;
@@ -66,12 +66,12 @@ void main()
 	FragColor = diffuse;
 }
 )");
-	fs->Compile();
+	m_fs->Compile();
 
-	program = new ogl::ShaderProgram;
-	program->Attach(*vs);
-	program->Attach(*fs);
-	program->Link();
+	m_program = new ogl::ShaderProgram;
+	m_program->Attach(*m_vs);
+	m_program->Attach(*m_fs);
+	m_program->Link();
 	
 	if (!m_grid.Init())
 		return false;
@@ -87,9 +87,9 @@ void GameScene::Close()
 	m_terra.Close();
 	m_grid.Close();
 
-	delete fs;
-	delete vs;
-	delete program;
+	delete m_fs;
+	delete m_vs;
+	delete m_program;
 }
 //=============================================================================
 void GameScene::Bind(Camera* camera)
@@ -119,62 +119,61 @@ void GameScene::beginDraw()
 	const auto wndWidth = window::GetWidth();
 	const auto wndHeight = window::GetHeight();
 
-	glm::mat4 view = m_data.camera->GetViewMatrix();
-	glm::mat4 proj = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.1f, 1000.0f);
-	m_terra.Update(proj, view, m_data.camera->GetPosition());
+	//glm::mat4 view = m_data.camera->GetViewMatrix();
+	//glm::mat4 proj = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.1f, 1000.0f);
+	//m_terra.Update(proj, view, m_data.camera->GetPosition());
 }
 //=============================================================================
 void GameScene::draw()
 {
+	// Matrices
+	const glm::mat4 view = m_data.camera->GetViewMatrix();
+	const glm::mat4 proj = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.1f, 1000.0f);
+
 	ogl::SetViewport({ window::GetWidth(), window::GetHeight() });
 	ogl::SetClearColor(0.3f, 0.4f, 0.9f, 1.0f);
 	ogl::Clear(true, true, true);
 
-	// Matrices
-	glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	glm::mat4 view = m_data.camera->GetViewMatrix();
-	glm::mat4 proj = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.1f, 1000.0f);
-
 	m_grid.Draw(proj, view);
-	m_terra.Draw(proj, view);
+	//m_terra.Draw(proj, view);
 
-	program->Bind();
-	program->SetUniform("viewMatrix", view);
-	program->SetUniform("projectionMatrix", proj);
-	program->SetUniform("u_Color", glm::vec3{ 1.0f, 1.0f, 1.0f });
+	if (m_data.countGameModels == 0) return;
+
+	m_program->Bind();
+	m_program->SetUniform("viewMatrix", view);
+	m_program->SetUniform("projectionMatrix", proj);
+	m_program->SetUniform("u_Color", glm::vec3{ 1.0f, 1.0f, 1.0f });
 	
 	for (size_t i = 0; i < m_data.countGameModels; i++)
 	{
-		if (!m_data.gameModels[i] || !m_data.gameModels[i]->visible || !m_data.gameModels[i]->model.Valid())
+		if (   !m_data.gameModels[i]
+			|| !m_data.gameModels[i]->visible
+			|| !m_data.gameModels[i]->model.Valid()
+			||  m_data.gameModels[i]->model.GetMeshes().empty() )
 			continue;
 
-		auto& modelMat = m_data.gameModels[i]->modelMat;
-		
-		program->SetUniform("modelMatrix", modelMat);
+		auto& modelMatrix = m_data.gameModels[i]->modelMatrix;
+		m_program->SetUniform("modelMatrix", modelMatrix);
+
 		for (size_t m = 0; m < m_data.gameModels[i]->model.GetMeshes().size(); m++)
 		{
 			auto* mesh = m_data.gameModels[i]->model.GetMesh(m);
 			if (mesh)
 			{
-				auto material = mesh->GetMaterial();
+				const auto& material = mesh->GetMaterial();
 				if (material.has_value())
 				{
 					if (!material->diffuseTextures.empty())
 					{
 						material->diffuseTextures[0].id->Bind(0);
-						program->SetUniform("diffuseTexture", 0);
+						m_program->SetUniform("diffuseTexture", 0);
 					}
 				}
-				mesh->GetVAO()->Bind();
-				if (mesh->GetIndexCount() > 0)
-					ogl::DrawElements(ogl::PrimitiveMode::Triangles, mesh->GetIndexCount());
-				else
-					ogl::DrawArrays(ogl::PrimitiveMode::Triangles, mesh->GetVertexCount());
-				mesh->GetVAO()->Unbind();
+				mesh->Draw();
 			}
 		}
 	}
-	program->Unbind();
+	m_program->Unbind();
 }
 //=============================================================================
 void GameScene::endDraw()

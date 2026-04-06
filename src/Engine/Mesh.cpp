@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Mesh.h"
+#include "OGLContext.h"
 //=============================================================================
 Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::optional<Material> material)
 {
@@ -55,6 +56,16 @@ Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>&
 //=============================================================================
 Mesh::~Mesh()
 {
+}
+//=============================================================================
+void Mesh::Draw()
+{
+	m_vao.Bind();
+	if (m_indicesCount > 0)
+		ogl::DrawElements(ogl::PrimitiveMode::Triangles, m_indicesCount);
+	else
+		ogl::DrawArrays(ogl::PrimitiveMode::Triangles, m_vertexCount);
+	m_vao.Unbind();
 }
 //=============================================================================
 void Mesh::initAABB(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indexData)
